@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
@@ -64,6 +65,8 @@ export default function RootLayout({
             © {new Date().getFullYear()} {siteConfig.name}
           </div>
         </footer>
+
+        <Analytics />
       </body>
     </html>
   );
