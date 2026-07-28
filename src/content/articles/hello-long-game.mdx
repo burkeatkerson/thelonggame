@@ -1,0 +1,46 @@
+---
+title: "Playing the long game"
+description: "Why the slow, compounding path usually beats the fast one — and how this site is set up to write about it."
+date: "2026-07-28"
+author: "Burke Latkerson"
+tags: ["meta", "strategy"]
+draft: false
+---
+
+This is a sample article. It lives at `src/content/articles/hello-long-game.mdx`, and
+everything above the second `---` is frontmatter that drives the listing pages, the
+page metadata, and the reading-time estimate.
+
+## Writing articles
+
+Create a new `.mdx` file in the same folder. The filename becomes the URL slug, so
+`compound-interest.mdx` is served at `/articles/compound-interest`.
+
+Required frontmatter fields are `title` and `date`. Everything else is optional:
+
+| Field         | Purpose                                            |
+| ------------- | -------------------------------------------------- |
+| `description` | Shown in listings and used as the meta description  |
+| `author`      | Displayed under the article title                   |
+| `tags`        | Rendered as pills at the foot of the article        |
+| `draft`       | `true` hides the article outside `npm run dev`      |
+
+## What MDX gives you
+
+Standard Markdown works — **bold**, _italic_, [links](/articles), lists, and
+blockquotes:
+
+> The best time to plant a tree was twenty years ago. The second best time is now.
+
+GitHub-flavoured Markdown is enabled, so tables, strikethrough, and task lists all
+work. Code blocks get syntax highlighting:
+
+```ts
+export function compound(principal: number, rate: number, years: number) {
+  return principal * (1 + rate) ** years;
+}
+```
+
+You can also drop React components straight into the prose. Add them to
+`src/mdx-components.tsx` and they become available in every article without an
+import.
