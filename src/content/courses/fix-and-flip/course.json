@@ -1,0 +1,13 @@
+{
+  "title": "Fix & flip: the operator's path",
+  "dek": "Turn houses nobody wants into paychecks nobody argues with. Twelve lessons from zero capital to a repeatable renovation machine — the math, the money, the crews, and the mistakes you get to skip.",
+  "year": 3,
+  "pillar": "capital",
+  "draft": false,
+  "modules": [
+    { "title": "Foundations — see the game clearly", "from": 1, "to": 3 },
+    { "title": "Find it & fund it", "from": 4, "to": 6 },
+    { "title": "Run the renovation", "from": 7, "to": 9 },
+    { "title": "Exit, keep, scale", "from": 10, "to": 12 }
+  ]
+}

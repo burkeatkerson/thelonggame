@@ -12,6 +12,13 @@ export const COURSES_DIR = path.join(process.cwd(), "src", "content", "courses")
  * course.json (metadata) and lessons/NN-<lesson-slug>.mdx. The numeric
  * prefix orders the lessons; it is stripped from the URL.
  */
+export type CourseModule = {
+  title: string;
+  /** 1-indexed lesson order range, inclusive */
+  from: number;
+  to: number;
+};
+
 export type CourseMeta = {
   slug: string;
   title: string;
@@ -24,6 +31,8 @@ export type CourseMeta = {
   draft: boolean;
   lessons: LessonMeta[];
   totalMins: number;
+  /** optional named groupings of lessons, declared in course.json */
+  modules: CourseModule[];
 };
 
 export type LessonMeta = {
@@ -80,6 +89,15 @@ function readCourse(slug: string): CourseMeta | null {
     draft: data.draft === true,
     lessons,
     totalMins: lessons.reduce((sum, l) => sum + l.mins, 0),
+    modules: Array.isArray(data.modules)
+      ? data.modules
+          .map((m: { title?: unknown; from?: unknown; to?: unknown }) => ({
+            title: String(m.title ?? ""),
+            from: Number(m.from ?? 0),
+            to: Number(m.to ?? 0),
+          }))
+          .filter((m: CourseModule) => m.title && m.from >= 1 && m.to >= m.from)
+      : [],
   };
 }
 
