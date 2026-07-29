@@ -75,10 +75,19 @@ src/content/courses/first-raise/
 
 ## Adding a calculator
 
-1. Build the component in `src/components/tools/`.
-2. Add a page at `src/app/tools/<slug>/page.tsx`.
-3. Register it in `src/lib/tools.ts` with `ready: true` and the stages it
-   serves. Unready tools show as "on the bench" on `/tools`.
+1. Build the client component in `src/components/tools/` using the shared
+   kit (`src/components/tools/ui.tsx`: `SliderInput`, `MetricTile`,
+   `VerdictPanel`, `LiveBars`, `LiveLines`) and the math in
+   `src/lib/finance.ts` — never inline duplicate finance formulas.
+2. Map slug → component in `src/components/tools/registry.tsx` (this also
+   makes it embeddable in any MDX article, e.g. `<BrrrrCalculator />`).
+3. Register metadata in `src/lib/tools.ts` (`headline`, `intro`, pillar,
+   stages, `ready: true`). The page at `/tools/<slug>`, the `/tools` index,
+   and the pillar hubs all pick it up automatically.
+
+Live calculators: Long Game (RE vs stocks), deal analyzer, flip/70% rule,
+BRRRR, house hack (incl. FHA self-sufficiency), refinance timer, waterfall
+visualizer, 1031 exchange. Each is embedded inside its matching articles.
 
 ## Routes
 

@@ -2,6 +2,7 @@ import Image, { type ImageProps } from "next/image";
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { BarChart, CompareLines, MoneyFlow, Timeline } from "@/components/mdx/charts";
+import { TOOL_COMPONENTS } from "@/components/tools/registry";
 import {
   Callout,
   FAQ,
@@ -29,6 +30,15 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ProcessSteps,
     StatGrid,
     VersusTable,
+    // Interactive calculators — embeddable in any article.
+    DealAnalyzer: TOOL_COMPONENTS["deal-analyzer"],
+    BrrrrCalculator: TOOL_COMPONENTS["brrrr-calculator"],
+    FlipCalculator: TOOL_COMPONENTS["flip-calculator"],
+    HouseHackCalculator: TOOL_COMPONENTS["house-hack-calculator"],
+    RefinanceTimer: TOOL_COMPONENTS["refinance-timer"],
+    WaterfallVisualizer: TOOL_COMPONENTS["waterfall-visualizer"],
+    ExchangeCalculator: TOOL_COMPONENTS["1031-exchange-calculator"],
+    LongGameCalculator: TOOL_COMPONENTS["long-game-calculator"],
     a: ({ href = "", children, ...props }) => {
       const isInternal = href.startsWith("/") || href.startsWith("#");
       if (isInternal) {
