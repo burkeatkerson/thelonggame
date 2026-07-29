@@ -1,6 +1,15 @@
 import Image, { type ImageProps } from "next/image";
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
+import { BarChart, CompareLines, MoneyFlow, Timeline } from "@/components/mdx/charts";
+import {
+  Callout,
+  FAQ,
+  KeyTakeaways,
+  ProcessSteps,
+  StatGrid,
+  VersusTable,
+} from "@/components/mdx/content-blocks";
 
 /**
  * Shared component overrides for every MDX article. Add custom article
@@ -9,6 +18,17 @@ import type { MDXComponents } from "mdx/types";
  */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
+    // Visual/AEO blocks — available in every article without imports.
+    BarChart,
+    CompareLines,
+    MoneyFlow,
+    Timeline,
+    Callout,
+    FAQ,
+    KeyTakeaways,
+    ProcessSteps,
+    StatGrid,
+    VersusTable,
     a: ({ href = "", children, ...props }) => {
       const isInternal = href.startsWith("/") || href.startsWith("#");
       if (isInternal) {

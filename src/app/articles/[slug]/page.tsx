@@ -47,8 +47,23 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   const section = article.section ? sectionOf(article.pillar, article.section) : undefined;
   const nextUp = getNextOnRoadmap(article.year).filter((a) => a.slug !== slug);
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.dek,
+    author: { "@type": "Person", name: article.author ?? "The Long Game" },
+    publisher: { "@type": "Organization", name: "The Long Game" },
+    ...(article.date ? { datePublished: article.date } : {}),
+    keywords: article.tags.join(", "),
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* ── main column ── */}
       <article className="flex flex-col gap-6 border-r border-divider px-6 pb-20 pt-[52px] md:px-14">
         <header className="flex flex-col gap-3.5">
