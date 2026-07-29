@@ -6,6 +6,7 @@ import { TickBar } from "@/components/horizon/tick-bar";
 import { ToolCallout } from "@/components/tool-callout";
 import { getAllArticles, getArticle, getNextOnRoadmap } from "@/lib/articles";
 import { stageForYear } from "@/lib/horizon";
+import { pillarBySlug, sectionOf } from "@/lib/pillars";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
 
 type Params = { slug: string };
@@ -43,6 +44,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
 
   const { default: Content } = await import(`../../../content/articles/${slug}.mdx`);
   const stage = stageForYear(article.year);
+  const section = article.section ? sectionOf(article.pillar, article.section) : undefined;
   const nextUp = getNextOnRoadmap(article.year).filter((a) => a.slug !== slug);
 
   return (
@@ -52,10 +54,15 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
         <header className="flex flex-col gap-3.5">
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
-              href="/library"
+              href={
+                article.section
+                  ? `/${article.pillar}/${article.section}`
+                  : `/${article.pillar}`
+              }
               className="font-mono text-[11px] uppercase tracking-[0.1em] text-accent no-underline"
             >
-              ← Library
+              ← {pillarBySlug(article.pillar)?.name}
+              {section ? ` / ${section.name}` : ""}
             </Link>
             <span className="kicker">
               {stage.name} · Year {article.year} · {CONTENT_TYPES[article.type].name}

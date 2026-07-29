@@ -1,4 +1,5 @@
 import type { StageSlug } from "@/lib/horizon";
+import type { PillarSlug } from "@/lib/pillars";
 
 /**
  * Tool registry. Each tool is a page under src/app/tools/<slug>/ with its
@@ -10,6 +11,8 @@ export type Tool = {
   name: string;
   dek: string;
   kind: "calculator" | "checklist" | "worksheet";
+  /** the pillar whose strategies this tool serves */
+  pillar: PillarSlug;
   /** the stages where this tool earns its keep */
   stages: StageSlug[];
   /** filed year, for "run this year through the numbers" callouts */
@@ -23,6 +26,7 @@ export const TOOLS: Tool[] = [
     name: "Deal analyzer",
     dek: "Cash-on-cash, cap rate and DSCR — the same three numbers every lender runs, with a verdict on which year of the roadmap the deal belongs to.",
     kind: "calculator",
+    pillar: "cashflow",
     stages: ["first-door", "scaling"],
     year: 3,
     ready: true,
@@ -32,6 +36,7 @@ export const TOOLS: Tool[] = [
     name: "Refinance timer",
     dek: "When a cash-out refi shortens the distance to Year 20, and when it just extends the runway on Year 7.",
     kind: "calculator",
+    pillar: "capital",
     stages: ["scaling"],
     year: 7,
     ready: false,
@@ -41,6 +46,7 @@ export const TOOLS: Tool[] = [
     name: "House hack math",
     dek: "What living in the deal actually does to your numbers — and your next loan.",
     kind: "calculator",
+    pillar: "cashflow",
     stages: ["foundation", "first-door"],
     year: 2,
     ready: false,
@@ -50,6 +56,7 @@ export const TOOLS: Tool[] = [
     name: "Waterfall visualizer",
     dek: "Preferred return, catch-up, promote — with the money actually moving.",
     kind: "calculator",
+    pillar: "wealth",
     stages: ["syndication"],
     year: 12,
     ready: false,
@@ -59,6 +66,7 @@ export const TOOLS: Tool[] = [
     name: "1031 chain planner",
     dek: "Deadlines, boot, and basis tracked across a chain of exchanges toward the step-up.",
     kind: "worksheet",
+    pillar: "wealth",
     stages: ["commercial", "legacy"],
     year: 17,
     ready: false,
@@ -71,4 +79,8 @@ export function getReadyTools(): Tool[] {
 
 export function getToolsForStage(stage: StageSlug): Tool[] {
   return TOOLS.filter((t) => t.stages.includes(stage));
+}
+
+export function getToolsForPillar(pillar: PillarSlug): Tool[] {
+  return TOOLS.filter((t) => t.pillar === pillar);
 }

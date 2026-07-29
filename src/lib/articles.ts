@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
-import { clampYear, stageForYear, type StageSlug, type Track } from "@/lib/horizon";
+import { clampYear, stageForYear, type StageSlug } from "@/lib/horizon";
+import { isPillarSlug, sectionOf, type PillarSlug } from "@/lib/pillars";
 import { isContentType, type ContentType } from "@/lib/taxonomy";
 
 export const ARTICLES_DIR = path.join(process.cwd(), "src", "content", "articles");
@@ -17,11 +18,14 @@ export type ArticleMeta = {
   title: string;
   /** the dek — one sentence under the title */
   dek: string;
+  /** which of the four pillars this piece belongs to */
+  pillar: PillarSlug;
+  /** section within the pillar (validated against src/lib/pillars.ts) */
+  section?: string;
   /** where on the twenty-year horizon this piece is filed (1–20) */
   year: number;
   stage: StageSlug;
   stageName: string;
-  track: Track;
   type: ContentType;
   author?: string;
   tags: string[];
@@ -35,8 +39,18 @@ function readArticleFile(slug: string): ArticleMeta {
   const raw = fs.readFileSync(path.join(ARTICLES_DIR, `${slug}.mdx`), "utf8");
   const { data, content } = matter(raw);
 
-  if (!data.title || data.year === undefined) {
-    throw new Error(`Article "${slug}" is missing required frontmatter: "title" and "year".`);
+  if (!data.title || data.year === undefined || !data.pillar) {
+    throw new Error(
+      `Article "${slug}" is missing required frontmatter: "title", "year" and "pillar".`,
+    );
+  }
+  const pillar = String(data.pillar);
+  if (!isPillarSlug(pillar)) {
+    throw new Error(`Article "${slug}" has unknown pillar "${pillar}".`);
+  }
+  const section = data.section ? String(data.section) : undefined;
+  if (section && !sectionOf(pillar, section)) {
+    throw new Error(`Article "${slug}" has unknown section "${section}" for pillar "${pillar}".`);
   }
   const type = String(data.type ?? "deep-dive");
   if (!isContentType(type)) {
@@ -50,10 +64,11 @@ function readArticleFile(slug: string): ArticleMeta {
     slug,
     title: String(data.title),
     dek: String(data.dek ?? data.description ?? ""),
+    pillar,
+    section,
     year,
     stage: stage.slug,
     stageName: stage.name,
-    track: stage.track,
     type,
     author: data.author ? String(data.author) : undefined,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
@@ -84,8 +99,12 @@ export function getAllArticles(): ArticleMeta[] {
     .sort((a, b) => a.year - b.year || a.title.localeCompare(b.title));
 }
 
-export function getArticlesForStage(stage: StageSlug): ArticleMeta[] {
-  return getAllArticles().filter((a) => a.stage === stage);
+export function getArticlesForPillar(pillar: PillarSlug): ArticleMeta[] {
+  return getAllArticles().filter((a) => a.pillar === pillar);
+}
+
+export function getArticlesForSection(pillar: PillarSlug, section: string): ArticleMeta[] {
+  return getAllArticles().filter((a) => a.pillar === pillar && a.section === section);
 }
 
 /** Pieces filed within ±1 year of the given horizon year. */

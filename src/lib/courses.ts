@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
-import { clampYear, stageForYear, type StageSlug, type Track } from "@/lib/horizon";
+import { clampYear, stageForYear, type StageSlug } from "@/lib/horizon";
+import { isPillarSlug, type PillarSlug } from "@/lib/pillars";
 
 export const COURSES_DIR = path.join(process.cwd(), "src", "content", "courses");
 
@@ -19,7 +20,7 @@ export type CourseMeta = {
   year: number;
   stage: StageSlug;
   stageName: string;
-  track: Track;
+  pillar: PillarSlug;
   draft: boolean;
   lessons: LessonMeta[];
   totalMins: number;
@@ -72,7 +73,10 @@ function readCourse(slug: string): CourseMeta | null {
     year,
     stage: stage.slug,
     stageName: stage.name,
-    track: stage.track,
+    pillar:
+      data.pillar && isPillarSlug(String(data.pillar))
+        ? (String(data.pillar) as PillarSlug)
+        : stage.focus[0],
     draft: data.draft === true,
     lessons,
     totalMins: lessons.reduce((sum, l) => sum + l.mins, 0),

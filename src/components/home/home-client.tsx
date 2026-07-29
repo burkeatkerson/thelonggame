@@ -5,7 +5,7 @@ import { ArticleCard } from "@/components/article-card";
 import { EmailCapture } from "@/components/email-capture";
 import { useHorizon } from "@/components/horizon/provider";
 import { ToolCallout } from "@/components/tool-callout";
-import { TRACKS } from "@/lib/horizon";
+import { PILLARS } from "@/lib/pillars";
 import type { ArticleMeta } from "@/lib/articles";
 
 export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
@@ -15,7 +15,7 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
 
   const stats = [
     { n: String(total), label: "pieces, year-indexed" },
-    { n: "2", label: "games — cashflow, then wealth" },
+    { n: "4", label: "pillars — mindset, capital, cashflow, wealth" },
     { n: "20", label: "years on the clock" },
     { n: "0", label: "get-rich-quick posts" },
   ];
@@ -141,25 +141,36 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
         ))}
       </section>
 
-      {/* ── the two games ── */}
-      <section className="grid grid-cols-1 gap-14 border-b border-divider px-6 py-16 md:px-10 lg:grid-cols-2">
-        {(Object.keys(TRACKS) as Array<keyof typeof TRACKS>).map((key) => (
-          <div key={key} className="flex flex-col gap-[18px]">
-            <div className="kicker-accent">
-              {key === "cashflow" ? "The first game" : "The second game"}
-            </div>
-            <h2 className="m-0 text-4xl font-medium leading-[1.08] tracking-[-0.025em]">
-              {TRACKS[key].name}
-            </h2>
-            <p className="m-0 text-neutral-400 [text-wrap:pretty]">{TRACKS[key].blurb}</p>
+      {/* ── the four pillars ── */}
+      <section className="flex flex-col gap-8 border-b border-divider px-6 py-16 md:px-10">
+        <div className="flex flex-col gap-2">
+          <div className="kicker-accent">The framework</div>
+          <h2 className="m-0 max-w-[720px] text-4xl font-medium leading-[1.08] tracking-[-0.025em]">
+            Four pillars, in order. Each one funds the next.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {PILLARS.map((p) => (
             <Link
-              href={`/library?track=${key}`}
-              className="text-[13px] text-accent no-underline"
+              key={p.slug}
+              href={`/${p.slug}`}
+              className="flex cursor-pointer flex-col gap-2 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:shadow-edge-accent"
             >
-              Read this game →
+              <span className="kicker-accent">
+                Pillar {p.order} · {p.years}
+              </span>
+              <span className="text-[19px] font-medium leading-[1.22] tracking-[-0.015em]">
+                {p.name}
+              </span>
+              <span className="text-[13px] leading-[1.45] text-neutral-500">
+                {p.tagline}.
+              </span>
             </Link>
-          </div>
-        ))}
+          ))}
+        </div>
+        <Link href="/roadmap" className="text-[13px] text-accent no-underline">
+          See the whole roadmap — four pillars over twenty years →
+        </Link>
       </section>
 
       {/* ── closing capture ── */}

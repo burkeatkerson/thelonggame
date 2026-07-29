@@ -1,9 +1,10 @@
+import type { PillarSlug } from "@/lib/pillars";
+
 /**
- * The horizon — the site's core model. Every piece of content is filed
- * against the year of a twenty-year plan it belongs to, not the day it was
- * published. Six stages cover the twenty years; the early stages are the
- * cashflow-and-capital game, the late stages are the generational-wealth
- * game, and the whole point of the sequence is getting from one to the other.
+ * The horizon — the sequencing layer. The four pillars (src/lib/pillars.ts)
+ * say WHAT the strategies are; the twenty-year roadmap says WHEN each one
+ * carries the plan. Six stages cover the twenty years, and each stage
+ * declares which pillars it leans on.
  */
 
 export const HORIZON_YEARS = 20;
@@ -16,8 +17,6 @@ export type StageSlug =
   | "commercial"
   | "legacy";
 
-export type Track = "cashflow" | "wealth";
-
 export type Stage = {
   slug: StageSlug;
   name: string;
@@ -25,8 +24,8 @@ export type Stage = {
   short: string;
   years: { from: number; to: number };
   range: string;
-  /** which game this stage is mostly playing */
-  track: Track;
+  /** the pillars this stage leans on, in order of emphasis */
+  focus: PillarSlug[];
   blurb: string;
   /** clear these before moving on — the stage's gate */
   milestones: string[];
@@ -39,7 +38,7 @@ export const STAGES: Stage[] = [
     short: "Foundation",
     years: { from: 1, to: 2 },
     range: "Y1–2",
-    track: "cashflow",
+    focus: ["mindset", "capital"],
     blurb:
       "No property yet — and that is the work. You are building the two things that compound before capital does: underwriting instinct, and a lender who takes your call.",
     milestones: [
@@ -54,7 +53,7 @@ export const STAGES: Stage[] = [
     short: "First door",
     years: { from: 3, to: 5 },
     range: "Y3–5",
-    track: "cashflow",
+    focus: ["capital", "cashflow"],
     blurb:
       "One property, held long enough to teach you what a spreadsheet cannot. The goal is not returns. It is survivable mistakes.",
     milestones: [
@@ -69,7 +68,7 @@ export const STAGES: Stage[] = [
     short: "Scaling",
     years: { from: 6, to: 10 },
     range: "Y6–10",
-    track: "cashflow",
+    focus: ["cashflow", "capital"],
     blurb:
       "The years that decide whether this is a business or a hobby with a mortgage. Systems, not heroics: one market, one manager, a financing rhythm.",
     milestones: [
@@ -84,7 +83,7 @@ export const STAGES: Stage[] = [
     short: "Syndication",
     years: { from: 11, to: 15 },
     range: "Y11–15",
-    track: "wealth",
+    focus: ["wealth", "cashflow"],
     blurb:
       "You stop buying and start sponsoring. Reputation becomes the asset and the tax code becomes a design tool instead of a bill.",
     milestones: [
@@ -99,7 +98,7 @@ export const STAGES: Stage[] = [
     short: "Commercial",
     years: { from: 16, to: 18 },
     range: "Y16–18",
-    track: "wealth",
+    focus: ["wealth"],
     blurb:
       "Longer leases, fewer decisions. If this stage feels busy, you bought the wrong asset.",
     milestones: [
@@ -114,7 +113,7 @@ export const STAGES: Stage[] = [
     short: "Legacy",
     years: { from: 19, to: 20 },
     range: "Y19–20",
-    track: "wealth",
+    focus: ["wealth", "mindset"],
     blurb:
       "The point of the whole sequence: assets that transfer with a step-up in basis, and heirs who understand what they are holding.",
     milestones: [
@@ -124,19 +123,6 @@ export const STAGES: Stage[] = [
     ],
   },
 ];
-
-export const TRACKS: Record<Track, { name: string; blurb: string }> = {
-  cashflow: {
-    name: "Cashflow & capital",
-    blurb:
-      "Years 1–10. Strategies that build income and a capital base: house hacks, boring rentals, refinance rhythm. Necessary — and not the end of the game.",
-  },
-  wealth: {
-    name: "Generational wealth",
-    blurb:
-      "Years 11–20. Strategies that convert a capital base into life-changing, transferable wealth: sponsorship, term over doors, 1031 chains, the step-up in basis.",
-  },
-};
 
 export function stageForYear(year: number): Stage {
   return STAGES.find((s) => year <= s.years.to) ?? STAGES[STAGES.length - 1];

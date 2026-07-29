@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { STAGES, type Track } from "@/lib/horizon";
+import { STAGES } from "@/lib/horizon";
+import { PILLARS, isPillarSlug, type PillarSlug } from "@/lib/pillars";
 import { CONTENT_TYPES, CONTENT_TYPE_ORDER, type ContentType } from "@/lib/taxonomy";
 import type { ArticleMeta } from "@/lib/articles";
 
@@ -11,16 +12,13 @@ type Facet = "everything" | ContentType;
 
 export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
   const params = useSearchParams();
-  const initialTrack = params.get("track");
+  const initialPillar = params.get("pillar");
 
   const [q, setQ] = useState("");
   const [facet, setFacet] = useState<Facet>("everything");
-  const [band, setBand] = useState<string | null>(() => {
-    // A ?track= link pre-selects nothing band-wise but filters by track.
-    return null;
-  });
-  const [track, setTrack] = useState<Track | null>(
-    initialTrack === "cashflow" || initialTrack === "wealth" ? initialTrack : null,
+  const [band, setBand] = useState<string | null>(null);
+  const [pillar, setPillar] = useState<PillarSlug | null>(
+    initialPillar && isPillarSlug(initialPillar) ? initialPillar : null,
   );
 
   const results = useMemo(() => {
@@ -31,18 +29,25 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
         (facet === "everything" || a.type === facet) &&
         (!activeStage ||
           (a.year >= activeStage.years.from && a.year <= activeStage.years.to)) &&
-        (!track || a.track === track) &&
+        (!pillar || a.pillar === pillar) &&
         (!query ||
-          `${a.title} ${a.dek} ${a.stageName} ${a.type} ${a.tags.join(" ")}`
+          `${a.title} ${a.dek} ${a.stageName} ${a.type} ${a.pillar} ${a.tags.join(" ")}`
             .toLowerCase()
             .includes(query)),
     );
-  }, [articles, q, facet, band, track]);
+  }, [articles, q, facet, band, pillar]);
 
   const countFor = (slug: string) => {
     const s = STAGES.find((st) => st.slug === slug)!;
     return articles.filter((a) => a.year >= s.years.from && a.year <= s.years.to).length;
   };
+
+  const chip = (active: boolean) =>
+    `cursor-pointer rounded-[20px] px-[13px] py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] transition-all duration-150 ${
+      active
+        ? "bg-accent-700 text-accent-100 shadow-edge-accent"
+        : "bg-transparent text-neutral-400 shadow-edge"
+    }`;
 
   return (
     <div className="flex flex-col">
@@ -51,8 +56,8 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
           Everything, filed against the clock.
         </h1>
         <p className="m-0 max-w-[620px] text-neutral-400 [text-wrap:pretty]">
-          The whole archive. Narrow it by horizon band or by what it is — nothing here
-          is sorted by date, because nothing here expires.
+          The whole archive. Narrow it by pillar, by horizon band or by what it is —
+          nothing here is sorted by date, because nothing here expires.
         </p>
         <div className="flex max-w-[720px] items-center gap-3 rounded-md bg-surface px-4 py-[13px] shadow-edge-strong">
           <span className="text-[15px] text-neutral-600">⌕</span>
@@ -63,42 +68,28 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
             className="flex-1 border-none bg-transparent text-base text-ink outline-none placeholder:text-neutral-600"
           />
         </div>
-        <div className="flex flex-wrap gap-2">
-          {(["everything", ...CONTENT_TYPE_ORDER] as Facet[]).map((f) => {
-            const active = facet === f;
-            return (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setFacet(f)}
-                className={`cursor-pointer rounded-[20px] px-[13px] py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] transition-all duration-150 ${
-                  active
-                    ? "bg-accent-700 text-accent-100 shadow-edge-accent"
-                    : "bg-transparent text-neutral-400 shadow-edge"
-                }`}
-              >
-                {f === "everything" ? "Everything" : CONTENT_TYPES[f].name}
-              </button>
-            );
-          })}
-          <span className="mx-1 w-px bg-divider" />
-          {(["cashflow", "wealth"] as Track[]).map((t) => {
-            const active = track === t;
-            return (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTrack(active ? null : t)}
-                className={`cursor-pointer rounded-[20px] px-[13px] py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] transition-all duration-150 ${
-                  active
-                    ? "bg-accent-700 text-accent-100 shadow-edge-accent"
-                    : "bg-transparent text-neutral-400 shadow-edge"
-                }`}
-              >
-                {t === "cashflow" ? "Cashflow & capital" : "Generational wealth"}
-              </button>
-            );
-          })}
+        <div className="flex flex-wrap items-center gap-2">
+          {PILLARS.map((p) => (
+            <button
+              key={p.slug}
+              type="button"
+              onClick={() => setPillar(pillar === p.slug ? null : p.slug)}
+              className={chip(pillar === p.slug)}
+            >
+              {p.short}
+            </button>
+          ))}
+          <span className="mx-1 h-5 w-px bg-divider" />
+          {(["everything", ...CONTENT_TYPE_ORDER] as Facet[]).map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFacet(f)}
+              className={chip(facet === f)}
+            >
+              {f === "everything" ? "Everything" : CONTENT_TYPES[f].name}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -137,7 +128,7 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
             <Link
               key={a.slug}
               href={`/articles/${a.slug}`}
-              className="-mx-3.5 grid cursor-pointer grid-cols-[44px_1fr] items-center gap-[18px] rounded-[6px] border-b border-divider-faint px-3.5 py-[15px] text-inherit no-underline transition-colors duration-150 hover:bg-panel md:grid-cols-[44px_1fr_120px_96px_58px]"
+              className="-mx-3.5 grid cursor-pointer grid-cols-[44px_1fr] items-center gap-[18px] rounded-[6px] border-b border-divider-faint px-3.5 py-[15px] text-inherit no-underline transition-colors duration-150 hover:bg-panel md:grid-cols-[44px_1fr_96px_120px_96px_58px]"
             >
               <span className="font-mono text-xs text-accent">Y{a.year}</span>
               <span className="flex flex-col gap-0.5">
@@ -147,6 +138,9 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
                 {a.dek ? (
                   <span className="text-xs text-neutral-600 [text-wrap:pretty]">{a.dek}</span>
                 ) : null}
+              </span>
+              <span className="hidden font-mono text-[10px] uppercase tracking-[0.06em] text-neutral-500 md:block">
+                {PILLARS.find((p) => p.slug === a.pillar)?.short}
               </span>
               <span className="hidden text-xs text-neutral-500 md:block">{a.stageName}</span>
               <span className="hidden font-mono text-[10px] uppercase tracking-[0.06em] text-accent-300 md:block">

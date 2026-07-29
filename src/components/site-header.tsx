@@ -7,10 +7,13 @@ import { TickBar } from "@/components/horizon/tick-bar";
 
 const NAV = [
   { label: "Horizon", href: "/" },
+  { label: "Roadmap", href: "/roadmap" },
+  { label: "Mindset", href: "/mindset" },
+  { label: "Capital", href: "/capital" },
+  { label: "Cashflow", href: "/cashflow" },
+  { label: "Wealth", href: "/wealth" },
   { label: "Library", href: "/library" },
-  { label: "Courses", href: "/courses" },
   { label: "Numbers", href: "/tools" },
-  { label: "Glossary", href: "/glossary" },
 ];
 
 function isActive(pathname: string, href: string): boolean {

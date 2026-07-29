@@ -4,6 +4,7 @@ import Link from "next/link";
 import { EmailCapture } from "@/components/email-capture";
 import { useHorizon } from "@/components/horizon/provider";
 import { STAGES } from "@/lib/horizon";
+import { pillarBySlug } from "@/lib/pillars";
 
 /**
  * Set your horizon — the reader places themselves on the twenty-year clock
@@ -39,7 +40,7 @@ export function StartClient() {
               }`}
             >
               <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-accent">
-                {s.range} · {s.track === "cashflow" ? "Cashflow & capital" : "Generational wealth"}
+                {s.range} · {s.focus.map((f) => pillarBySlug(f)?.short).join(" + ")}
               </span>
               <span className="text-[19px] font-medium tracking-[-0.015em]">{s.name}</span>
               <span className="text-[13px] leading-[1.45] text-neutral-500 [text-wrap:pretty]">

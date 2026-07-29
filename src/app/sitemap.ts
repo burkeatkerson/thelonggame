@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllArticles } from "@/lib/articles";
 import { getAllCourses } from "@/lib/courses";
 import { getReadyTools } from "@/lib/tools";
+import { PILLARS } from "@/lib/pillars";
 import { siteConfig } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -16,8 +17,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.url}/tools/${t.slug}`,
   }));
 
+  const pillars = PILLARS.flatMap((p) => [
+    { url: `${siteConfig.url}/${p.slug}` },
+    ...p.sections.map((s) => ({ url: `${siteConfig.url}/${p.slug}/${s.slug}` })),
+  ]);
+
   return [
     { url: siteConfig.url },
+    { url: `${siteConfig.url}/roadmap` },
+    ...pillars,
     { url: `${siteConfig.url}/library` },
     { url: `${siteConfig.url}/courses` },
     { url: `${siteConfig.url}/tools` },
