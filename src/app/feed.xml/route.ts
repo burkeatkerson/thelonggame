@@ -15,8 +15,9 @@ export function GET() {
       <title>${escapeXml(article.title)}</title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
-      <description>${escapeXml(article.description)}</description>
-      <pubDate>${new Date(article.date).toUTCString()}</pubDate>
+      <description>${escapeXml(article.dek)}</description>${
+        article.date ? `\n      <pubDate>${new Date(article.date).toUTCString()}</pubDate>` : ""
+      }
     </item>`;
     })
     .join("\n");

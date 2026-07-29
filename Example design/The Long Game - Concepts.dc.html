@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  body { margin:0; background:#101220; color:#e9e9ed; font-family:"Inter",system-ui,sans-serif; font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  a { color:#9184d9; text-decoration:none; text-underline-offset:3px; }
+  a:hover { color:#b5abfc; text-decoration:underline; }
+  input { font-family:inherit; }
+  ::selection { background:#423a6a; }
+  :focus-visible { outline:2px solid #9184d9; outline-offset:2px; }
+</style>
+</helmet>
+
+<section style="display:flex;flex-direction:column;gap:28px;padding:56px 56px 96px">
+  <div style="display:flex;flex-direction:column;gap:10px;max-width:760px">
+    <div style="font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#9397ab">Round 1 · three navigation models for 500+ articles</div>
+    <h1 style="margin:0;font-size:42px;font-weight:500;letter-spacing:-0.02em;line-height:1.1">The Long Game</h1>
+    <p style="margin:0;color:#b2b6ca;max-width:640px;text-wrap:pretty">Same content, three different ideas about what the reader is doing when they arrive. Each one is desktop-first, live, and clickable. Reference them as <a href="#1a">1a</a>, <a href="#1b">1b</a>, <a href="#1c">1c</a>.</p>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <!-- ══ 1a ══ -->
+    <div id="1a" style="display:flex;flex-direction:column;gap:14px;width:1280px">
+      <div style="display:flex;align-items:baseline;gap:14px">
+        <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;padding:4px 9px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd">1A</span>
+        <h2 style="margin:0;font-size:25px;font-weight:500;letter-spacing:-0.015em">The Horizon</h2>
+        <span style="color:#9397ab;font-size:14px">Time is the axis. You scrub through twenty years and the library answers.</span>
+      </div>
+
+      <div style="background:#161826;box-shadow:0 0 0 1px #3f424d;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;border-bottom:1px solid rgba(233,233,237,0.10)">
+          <div style="display:flex;align-items:center;gap:32px">
+            <div style="font-weight:600;letter-spacing:-0.01em">The Long&nbsp;Game</div>
+            <div style="display:flex;gap:22px;font-size:14px;color:#b2b6ca">
+              <span style="color:#e9e9ed;border-bottom:1px solid #9184d9;padding-bottom:2px">Horizon</span>
+              <span style="cursor:pointer" style-hover="color:#e9e9ed">Library</span>
+              <span style="cursor:pointer" style-hover="color:#e9e9ed">Numbers</span>
+              <span style="cursor:pointer" style-hover="color:#e9e9ed">The Book</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#9397ab">
+            <span>{{ total }} articles</span>
+            <span style="padding:6px 14px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd;cursor:pointer" style-hover="background:#2b2741">Join 11,400 investors</span>
+          </div>
+        </div>
+
+        <div style="padding:52px 32px 36px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#9397ab">Where are you on the twenty-year clock?</div>
+          <h3 style="margin:0;font-size:38px;font-weight:500;letter-spacing:-0.02em;max-width:700px;line-height:1.12">Tax-free wealth is not a deal. It is a sequence.</h3>
+          <p style="margin:6px 0 0;color:#b2b6ca;max-width:560px;text-wrap:pretty">Drag the horizon. Every article, calculator and template on this site is filed against the year of the plan it belongs to — so you read what is next, not what is loudest.</p>
+        </div>
+
+        <div style="padding:0 32px 30px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:flex-end;gap:6px;height:78px">
+            <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="20">
+              <div onClick="{{ t.pick }}" title="Year {{ t.n }}" style="flex:1;cursor:pointer;border-radius:3px 3px 0 0;transition:background 120ms,height 160ms;height:{{ t.h }};background:{{ t.bg }}"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#75798c">
+            <span>Year 1 · first door</span>
+            <span>Year 10 · scale</span>
+            <span>Year 20 · legacy, tax-free</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:340px 1fr;gap:0;border-top:1px solid rgba(233,233,237,0.10)">
+          <div style="padding:30px 32px;border-right:1px solid rgba(233,233,237,0.10);display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#9397ab">Year {{ year }}</div>
+              <div style="font-size:25px;font-weight:500;letter-spacing:-0.015em">{{ stageName }}</div>
+              <p style="margin:4px 0 0;color:#b2b6ca;font-size:14px;text-wrap:pretty">{{ stageBlurb }}</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c">The roadmap at this point</div>
+              <sc-for list="{{ milestones }}" as="m" hint-placeholder-count="3">
+                <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#e9e9ed">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#9184d9;margin-top:7px;flex:none"></span>
+                  <span>{{ m }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:auto;padding:16px;border-radius:8px;background:#1c1f30;box-shadow:0 0 0 1px #3f424d;display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:14px;font-weight:500">Save this year as your starting line</div>
+              <div style="font-size:13px;color:#9397ab;line-height:1.45">One email a week, sequenced from Year {{ year }} forward. No feed, no backlog guilt.</div>
+              <div style="display:flex;gap:6px;margin-top:2px">
+                <input placeholder="you@email.com" style="flex:1;min-width:0;background:#161826;border:1px solid #595d6c;border-radius:4px;color:#e9e9ed;padding:8px 10px;font-size:13px">
+                <span style="padding:8px 14px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd;font-size:13px;cursor:pointer;white-space:nowrap" style-hover="background:#2b2741">Start</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:30px 32px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c">Filed to year {{ year }} · {{ yearCount }} pieces</div>
+              <span style="font-size:13px;color:#9184d9;cursor:pointer">See all in the library →</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <sc-for list="{{ yearArticles }}" as="a" hint-placeholder-count="4">
+                <div style="padding:18px;border-radius:8px;background:#232532;box-shadow:0 0 0 1px #3f424d;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:box-shadow 140ms" style-hover="box-shadow:0 0 0 1px #9184d9">
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <span style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;padding:3px 7px;border-radius:4px;background:#2b2741;color:#d2cefd">{{ a.type }}</span>
+                    <span style="font-size:12px;color:#75798c">{{ a.mins }} min</span>
+                  </div>
+                  <div style="font-size:17px;font-weight:500;letter-spacing:-0.01em;line-height:1.25;text-wrap:pretty">{{ a.t }}</div>
+                  <div style="font-size:13px;color:#9397ab">{{ a.stage }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:6px;padding:20px 24px;border-radius:8px;background:#262a60;display:flex;align-items:center;justify-content:space-between;gap:24px">
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:18px;font-weight:500;letter-spacing:-0.01em">Run year {{ year }} through the numbers</div>
+                <div style="font-size:13px;color:#d2cefd">Cash-on-cash, DSCR and cap rate, pre-filled with this stage's assumptions.</div>
+              </div>
+              <span style="padding:9px 16px;border:1px solid #b5abfc;border-radius:4px;color:#f5f4ff;font-size:13px;white-space:nowrap;cursor:pointer" style-hover="background:#353b80">Open calculators</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 1b ══ -->
+    <div id="1b" style="display:flex;flex-direction:column;gap:14px;width:1280px">
+      <div style="display:flex;align-items:baseline;gap:14px">
+        <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;padding:4px 9px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd">1B</span>
+        <h2 style="margin:0;font-size:25px;font-weight:500;letter-spacing:-0.015em">The Stack</h2>
+        <span style="color:#9397ab;font-size:14px">The roadmap is the product: six floors, each with a gate you have to clear.</span>
+      </div>
+
+      <div style="background:#161826;box-shadow:0 0 0 1px #3f424d;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;border-bottom:1px solid rgba(233,233,237,0.10)">
+          <div style="display:flex;align-items:center;gap:32px">
+            <div style="font-weight:600;letter-spacing:-0.01em">The Long&nbsp;Game</div>
+            <div style="display:flex;gap:22px;font-size:14px;color:#b2b6ca">
+              <span style="color:#e9e9ed;border-bottom:1px solid #9184d9;padding-bottom:2px">The Stack</span>
+              <span style="cursor:pointer" style-hover="color:#e9e9ed">Archive</span>
+              <span style="cursor:pointer" style-hover="color:#e9e9ed">Tools</span>
+              <span style="cursor:pointer" style-hover="color:#e9e9ed">Glossary</span>
+            </div>
+          </div>
+          <sc-if value="{{ showProgress }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13px">
+              <span style="color:#9397ab">{{ progressLabel }}</span>
+              <div style="width:120px;height:5px;border-radius:3px;background:#3f424d;overflow:hidden">
+                <div style="height:100%;background:#9184d9;width:{{ progressPct }}"></div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1.35fr;min-height:640px">
+          <div style="padding:36px 32px;display:flex;flex-direction:column;gap:22px;border-right:1px solid rgba(233,233,237,0.10)">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <h3 style="margin:0;font-size:32px;font-weight:500;letter-spacing:-0.02em;line-height:1.12">You do not skip floors.</h3>
+              <p style="margin:0;color:#b2b6ca;font-size:14px;max-width:400px;text-wrap:pretty">Six stages, from a rent roll you can barely read to a triple-net portfolio you never visit. Climb from wherever you actually are.</p>
+            </div>
+            <div style="display:flex;flex-direction:column-reverse;gap:8px">
+              <sc-for list="{{ floors }}" as="f" hint-placeholder-count="6">
+                <div onClick="{{ f.pick }}" style="cursor:pointer;padding:16px 18px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:14px;transition:background 140ms;background:{{ f.bg }};box-shadow:{{ f.ring }}">
+                  <div style="display:flex;align-items:center;gap:14px">
+                    <span style="font-size:11px;letter-spacing:0.08em;color:{{ f.numColor }};width:22px">{{ f.num }}</span>
+                    <div style="display:flex;flex-direction:column;gap:2px">
+                      <span style="font-size:17px;font-weight:500;letter-spacing:-0.01em;color:{{ f.titleColor }}">{{ f.name }}</span>
+                      <span style="font-size:12px;color:#75798c">{{ f.sub }}</span>
+                    </div>
+                  </div>
+                  <span style="font-size:12px;color:#75798c;white-space:nowrap">{{ f.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:auto;font-size:12px;color:#75798c;line-height:1.5">Progress is kept in this browser. An account only becomes useful when you want the plan on your phone at a walkthrough.</div>
+          </div>
+
+          <div style="padding:36px 32px;display:flex;flex-direction:column;gap:24px;background:#131523">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#9184d9">Floor {{ floor.num }} · {{ floor.years }}</div>
+              <h3 style="margin:0;font-size:32px;font-weight:500;letter-spacing:-0.02em">{{ floor.name }}</h3>
+              <p style="margin:2px 0 0;color:#b2b6ca;max-width:520px;text-wrap:pretty">{{ floor.blurb }}</p>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c">The gate — clear these and the next floor unlocks</div>
+              <sc-for list="{{ floor.gates }}" as="g" hint-placeholder-count="3">
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border-radius:8px;background:#1c1f30;box-shadow:0 0 0 1px #3f424d;cursor:pointer" style-hover="box-shadow:0 0 0 1px #595d6c">
+                  <span style="width:15px;height:15px;border-radius:4px;border:1px solid #75798c;margin-top:3px;flex:none"></span>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:15px">{{ g.t }}</span>
+                    <span style="font-size:12px;color:#75798c">{{ g.meta }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c">Reading for this floor</div>
+              <sc-for list="{{ floorArticles }}" as="a" hint-placeholder-count="4">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:11px;border-bottom:1px solid rgba(233,233,237,0.08);cursor:pointer" style-hover="border-bottom:1px solid #9184d9">
+                  <span style="font-size:16px;letter-spacing:-0.01em">{{ a.t }}</span>
+                  <span style="font-size:12px;color:#75798c;white-space:nowrap">{{ a.type }} · {{ a.mins }} min</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="margin-top:auto;padding:20px;border-radius:8px;background:#1c1f30;box-shadow:0 0 0 1px #423a6a;display:flex;align-items:center;justify-content:space-between;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:17px;font-weight:500;letter-spacing:-0.01em">Get floor {{ floor.num }} as a checklist</div>
+                <div style="font-size:13px;color:#9397ab">Plus the two emails that get most people through this gate.</div>
+              </div>
+              <div style="display:flex;gap:6px">
+                <input placeholder="you@email.com" style="width:180px;background:#161826;border:1px solid #595d6c;border-radius:4px;color:#e9e9ed;padding:8px 10px;font-size:13px">
+                <span style="padding:8px 14px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd;font-size:13px;cursor:pointer;white-space:nowrap" style-hover="background:#2b2741">Send it</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 1c ══ -->
+    <div id="1c" style="display:flex;flex-direction:column;gap:14px;width:1280px">
+      <div style="display:flex;align-items:baseline;gap:14px">
+        <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;padding:4px 9px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd">1C</span>
+        <h2 style="margin:0;font-size:25px;font-weight:500;letter-spacing:-0.015em">The Desk</h2>
+        <span style="color:#9397ab;font-size:14px">Search-first reference room. Built for the reader who arrives mid-deal with a question.</span>
+      </div>
+
+      <div style="background:#161826;box-shadow:0 0 0 1px #3f424d;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;border-bottom:1px solid rgba(233,233,237,0.10)">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="font-weight:600;letter-spacing:-0.01em">The Long&nbsp;Game</div>
+            <span style="font-size:12px;color:#75798c;padding-left:14px;border-left:1px solid rgba(233,233,237,0.14)">The desk · everything, indexed</span>
+          </div>
+          <span style="padding:6px 14px;border:1px solid #9184d9;border-radius:4px;color:#d2cefd;font-size:13px;cursor:pointer" style-hover="background:#2b2741">Weekly teardown →</span>
+        </div>
+
+        <div style="padding:40px 32px 24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px">
+            <h3 style="margin:0;font-size:32px;font-weight:500;letter-spacing:-0.02em;max-width:560px;line-height:1.14">Ask it the way you'd ask it out loud.</h3>
+            <div style="font-size:13px;color:#75798c;text-align:right;line-height:1.5">{{ total }} pieces · 41 templates<br>19 calculators · 300-term glossary</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:8px;background:#232532;box-shadow:0 0 0 1px #595d6c">
+            <span style="font-size:15px;color:#75798c">⌕</span>
+            <input value="{{ q }}" onChange="{{ setQ }}" placeholder="&quot;is a DSCR loan worse than conventional?&quot;" style="flex:1;background:transparent;border:none;outline:none;color:#e9e9ed;font-size:17px">
+            <span style="font-size:11px;color:#75798c;padding:3px 7px;border-radius:4px;background:#161826;box-shadow:0 0 0 1px #3f424d">⌘K</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ facets }}" as="f" hint-placeholder-count="7">
+              <span onClick="{{ f.pick }}" style="cursor:pointer;font-size:12px;letter-spacing:0.04em;padding:6px 12px;border-radius:20px;transition:all 140ms;color:{{ f.color }};background:{{ f.bg }};box-shadow:{{ f.ring }}">{{ f.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 320px;border-top:1px solid rgba(233,233,237,0.10)">
+          <div style="padding:24px 32px 32px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c;padding-bottom:12px">{{ resultLabel }}</div>
+            <sc-for list="{{ results }}" as="a" hint-placeholder-count="8">
+              <div style="display:grid;grid-template-columns:1fr 130px 90px 60px;gap:16px;align-items:center;margin:0 -12px;border-radius:6px;border-bottom:1px solid rgba(233,233,237,0.07);cursor:pointer;padding:{{ rowPad }}" style-hover="background:#1c1f30">
+                <span style="letter-spacing:-0.01em;text-wrap:pretty;font-size:{{ rowSize }}">{{ a.t }}</span>
+                <span style="font-size:12px;color:#9397ab">{{ a.stage }}</span>
+                <span style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#d2cefd">{{ a.type }}</span>
+                <span style="font-size:12px;color:#75798c;text-align:right">{{ a.mins }} min</span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:28px 0;color:#9397ab;font-size:14px">Nothing filed under that yet — <span style="color:#9184d9">ask it in the forum</span> and it becomes next week's piece.</div>
+            </sc-if>
+          </div>
+
+          <div style="padding:24px;border-left:1px solid rgba(233,233,237,0.10);display:flex;flex-direction:column;gap:20px;background:#131523">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c">Docked tools</div>
+              <sc-for list="{{ tools }}" as="t" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-radius:8px;background:#1c1f30;box-shadow:0 0 0 1px #3f424d;cursor:pointer" style-hover="box-shadow:0 0 0 1px #9184d9">
+                  <span style="font-size:14px">{{ t.name }}</span>
+                  <span style="font-size:11px;color:#75798c">{{ t.kind }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:11px;letter-spacing:0.09em;text-transform:uppercase;color:#75798c">Where this all goes</div>
+              <p style="margin:0;font-size:13px;color:#b2b6ca;line-height:1.5;text-wrap:pretty">Every piece here is a page of the same argument: a twenty-year roadmap to tax-free wealth through scalable real estate.</p>
+              <div style="padding:14px;border-radius:8px;background:#262a60;display:flex;flex-direction:column;gap:8px">
+                <div style="font-size:15px;font-weight:500">The Long Game — the book</div>
+                <div style="font-size:12px;color:#d2cefd;line-height:1.45">The whole roadmap in order. Chapter one is free when you join the list.</div>
+                <div style="display:flex;flex-direction:column;gap:6px;margin-top:2px">
+                  <input placeholder="you@email.com" style="background:#161826;border:1px solid #595d6c;border-radius:4px;color:#e9e9ed;padding:8px 10px;font-size:13px">
+                  <span style="padding:8px 12px;border:1px solid #b5abfc;border-radius:4px;color:#f5f4ff;font-size:13px;text-align:center;cursor:pointer" style-hover="background:#353b80">Send chapter one</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showProgressTracking&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;resultDensity&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;comfortable&quot;,&quot;options&quot;:[&quot;comfortable&quot;,&quot;dense&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  state = { year: 7, floorIdx: 2, q: '', facet: 'Everything' };
+
+  ARTICLES = [
+    { t: 'Why your first deal should be boring', stage: 'Foundation', year: 1, type: 'Roadmap', mins: 9 },
+    { t: 'The twenty-year math nobody shows you', stage: 'Foundation', year: 1, type: 'Deep dive', mins: 14 },
+    { t: 'Reading a rent roll before you can read a P&L', stage: 'Foundation', year: 2, type: 'Deep dive', mins: 11 },
+    { t: 'What "tax-free" actually means on a return', stage: 'Foundation', year: 2, type: 'Glossary', mins: 6 },
+    { t: 'House hacking without wrecking your credit', stage: 'First door', year: 3, type: 'Roadmap', mins: 12 },
+    { t: 'DSCR loans: what underwriters actually check', stage: 'First door', year: 3, type: 'Deep dive', mins: 15 },
+    { t: 'The 90-day close, day by day', stage: 'First door', year: 4, type: 'Template', mins: 7 },
+    { t: 'A $312k duplex, four years later', stage: 'First door', year: 5, type: 'Case study', mins: 18 },
+    { t: 'From four doors to twelve without a partner', stage: 'Scaling', year: 6, type: 'Roadmap', mins: 16 },
+    { t: 'Cash-out refi as an engine, not an exit', stage: 'Scaling', year: 7, type: 'Deep dive', mins: 13 },
+    { t: 'When to fire your property manager', stage: 'Scaling', year: 7, type: 'Deep dive', mins: 10 },
+    { t: 'Twelve doors, one spreadsheet: the numbers', stage: 'Scaling', year: 8, type: 'Case study', mins: 20 },
+    { t: 'Your operating agreement, annotated', stage: 'Scaling', year: 9, type: 'Template', mins: 8 },
+    { t: 'Small multifamily is a different business', stage: 'Scaling', year: 10, type: 'Roadmap', mins: 17 },
+    { t: 'Your first LP raise: the documents that matter', stage: 'Syndication', year: 11, type: 'Roadmap', mins: 19 },
+    { t: 'Waterfalls in plain English', stage: 'Syndication', year: 12, type: 'Glossary', mins: 9 },
+    { t: '506(b) or 506(c): choosing once, carefully', stage: 'Syndication', year: 12, type: 'Deep dive', mins: 14 },
+    { t: 'A 48-unit raise that almost died at week six', stage: 'Syndication', year: 13, type: 'Case study', mins: 22 },
+    { t: 'Cost segregation, and what it costs you later', stage: 'Syndication', year: 14, type: 'Deep dive', mins: 15 },
+    { t: 'Triple-net: the boring cash flow of your fifties', stage: 'Commercial', year: 16, type: 'Roadmap', mins: 16 },
+    { t: '1031 chains and the step-up in basis', stage: 'Commercial', year: 17, type: 'Deep dive', mins: 21 },
+    { t: 'Underwriting a strip center on one page', stage: 'Commercial', year: 18, type: 'Template', mins: 10 },
+    { t: 'Handing a portfolio to people who did not build it', stage: 'Legacy', year: 19, type: 'Deep dive', mins: 13 },
+    { t: 'Twenty years, four refinances, zero tax paid', stage: 'Legacy', year: 20, type: 'Case study', mins: 24 }
+  ];
+
+  STAGES = [
+    { max: 2, name: 'Foundation', blurb: 'No property yet. You are building the only two things that compound before capital does: underwriting instinct and a lender who takes your call.', ms: ['Learn to price a deal in under ten minutes', 'Bank statements clean for twelve straight months', 'Write your twenty-year thesis in one page'] },
+    { max: 5, name: 'The first door', blurb: 'One property, held long enough to teach you what a spreadsheet cannot. The goal is not returns — it is survivable mistakes.', ms: ['Close a house hack or small rental', 'Reserve six months of debt service', 'Track real expenses, not projected ones'] },
+    { max: 10, name: 'Scaling the base', blurb: 'The years that decide whether this is a hobby or a business. Systems, not heroics: financing rhythm, one manager, one market.', ms: ['Reach ten doors in one submarket', 'Set a refinance cadence, not a refinance panic', 'Hire your first operator and hold them to numbers'] },
+    { max: 15, name: 'Other people\u2019s money', blurb: 'You stop buying and start sponsoring. Your reputation becomes the asset, and the tax code becomes a design tool rather than a bill.', ms: ['Run a first syndication end to end', 'Build a cost-seg and depreciation calendar', 'Codify your investor reporting'] },
+    { max: 18, name: 'Commercial and boring', blurb: 'Longer leases, fewer decisions. The portfolio should now be quieter than it was at four doors.', ms: ['Trade doors for term via 1031', 'Move to triple-net or industrial', 'Cut yourself out of daily operations'] },
+    { max: 20, name: 'The legacy year', blurb: 'The whole point of the sequence: assets that pass with a step-up in basis and heirs who understand what they hold.', ms: ['Structure the entity for transfer', 'Teach the plan to whoever inherits it', 'Decide what never gets sold'] }
+  ];
+
+  FLOORS = [
+    { name: 'Foundation', sub: 'Before your first door', years: 'Years 1–2', count: '84 pieces', stage: 'Foundation', blurb: 'You are not buying yet, and that is the work. This floor is about learning to say no fast, and getting your finances legible to a lender.', gates: [{ t: 'Underwrite ten deals you will never buy', meta: 'Template + calculator' }, { t: 'Twelve months of clean bank statements', meta: 'Checklist' }, { t: 'Write your one-page twenty-year thesis', meta: 'Template' }] },
+    { name: 'The first door', sub: 'One property, held', years: 'Years 3–5', count: '112 pieces', stage: 'First door', blurb: 'House hack, duplex, or a single boring rental. You want a deal that survives your own inexperience — not the best return on the block.', gates: [{ t: 'Get a lender pre-approval you understand', meta: 'Deep dive' }, { t: 'Close with six months of reserves intact', meta: 'Calculator' }, { t: 'Log twelve months of actual expenses', meta: 'Template' }] },
+    { name: 'Scaling the base', sub: '4 → 12 doors', years: 'Years 6–10', count: '138 pieces', stage: 'Scaling', blurb: 'The floor most people fall off. Growth here comes from a financing rhythm and one operator you trust, not from finding more deals.', gates: [{ t: 'Ten doors inside one submarket', meta: 'Roadmap' }, { t: 'A refinance cadence on the calendar', meta: 'Calculator' }, { t: 'One manager, held to written numbers', meta: 'Checklist' }] },
+    { name: 'Other people\u2019s money', sub: 'Your first raise', years: 'Years 11–15', count: '96 pieces', stage: 'Syndication', blurb: 'You become a sponsor. Documents, disclosure and depreciation strategy now matter more than acquisition skill.', gates: [{ t: 'Choose 506(b) or 506(c) — once', meta: 'Deep dive' }, { t: 'Close a first LP raise', meta: 'Roadmap' }, { t: 'Publish quarterly reporting on time, twice', meta: 'Template' }] },
+    { name: 'Commercial and boring', sub: 'Term over doors', years: 'Years 16–18', count: '61 pieces', stage: 'Commercial', blurb: 'Trade tenant turnover for lease term. If this floor feels busy, you bought the wrong asset.', gates: [{ t: 'Complete a 1031 into longer term', meta: 'Deep dive' }, { t: 'Underwrite a NNN asset on one page', meta: 'Template' }, { t: 'Remove yourself from operations', meta: 'Checklist' }] },
+    { name: 'The legacy year', sub: 'Tax-free transfer', years: 'Years 19–20', count: '43 pieces', stage: 'Legacy', blurb: 'Everything the roadmap was for: a structure that transfers, and people who know why it was built this way.', gates: [{ t: 'Entity structured for transfer', meta: 'Deep dive' }, { t: 'Heirs walked through the plan', meta: 'Checklist' }, { t: 'Decide what never gets sold', meta: 'Essay' }] }
+  ];
+
+  FACETS = ['Everything', 'Roadmap', 'Deep dive', 'Case study', 'Template', 'Glossary'];
+
+  renderVals() {
+    const year = this.state.year;
+    const stage = this.STAGES.find(s => year <= s.max) || this.STAGES[0];
+    const band = this.ARTICLES.filter(a => Math.abs(a.year - year) <= 1);
+
+    const ticks = [];
+    for (let n = 1; n <= 20; n++) {
+      const sel = n === year;
+      ticks.push({
+        n,
+        h: sel ? '100%' : (n < year ? '46%' : '30%'),
+        bg: sel ? '#9184d9' : (n < year ? '#5d5294' : '#3f424d'),
+        pick: () => this.setState({ year: n })
+      });
+    }
+
+    const fi = this.state.floorIdx;
+    const floor = this.FLOORS[fi];
+    const floors = this.FLOORS.map((f, i) => ({
+      ...f,
+      num: i + 1,
+      bg: i === fi ? '#2b2741' : (i < fi ? '#1c1f30' : 'transparent'),
+      ring: i === fi ? '0 0 0 1px #9184d9' : '0 0 0 1px #3f424d',
+      numColor: i === fi ? '#d2cefd' : '#75798c',
+      titleColor: i > fi ? '#9397ab' : '#e9e9ed',
+      pick: () => this.setState({ floorIdx: i })
+    }));
+
+    const q = this.state.q.trim().toLowerCase();
+    const facet = this.state.facet;
+    const results = this.ARTICLES.filter(a =>
+      (facet === 'Everything' || a.type === facet) &&
+      (!q || (a.t + ' ' + a.stage + ' ' + a.type).toLowerCase().includes(q))
+    ).slice(0, 9);
+
+    const dense = (this.props.resultDensity ?? 'comfortable') === 'dense';
+
+    return {
+      showProgress: this.props.showProgressTracking ?? true,
+      rowPad: dense ? '7px 12px' : '13px 12px',
+      rowSize: dense ? '14px' : '16px',
+      total: '512',
+      year,
+      stageName: stage.name,
+      stageBlurb: stage.blurb,
+      milestones: stage.ms,
+      ticks,
+      yearArticles: band.slice(0, 4),
+      yearCount: band.length,
+
+      floors,
+      floor: { ...floor, num: fi + 1 },
+      floorArticles: this.ARTICLES.filter(a => a.stage === floor.stage).slice(0, 4),
+      progressLabel: 'Floor ' + (fi + 1) + ' of 6',
+      progressPct: Math.round(((fi + 1) / 6) * 100) + '%',
+
+      q: this.state.q,
+      setQ: e => this.setState({ q: e.target.value }),
+      facets: this.FACETS.map(f => ({
+        label: f,
+        color: f === facet ? '#f5f4ff' : '#b2b6ca',
+        bg: f === facet ? '#5d5294' : 'transparent',
+        ring: f === facet ? '0 0 0 1px #9184d9' : '0 0 0 1px #3f424d',
+        pick: () => this.setState({ facet: f })
+      })),
+      results,
+      noResults: results.length === 0,
+      resultLabel: results.length === 0 ? 'No matches' : 'Showing ' + results.length + ' of 512 — ranked by where you are, not when it was published',
+      tools: [
+        { name: 'Cap rate', kind: 'Calculator' },
+        { name: 'Cash-on-cash', kind: 'Calculator' },
+        { name: 'DSCR check', kind: 'Calculator' },
+        { name: 'Deal one-pager', kind: 'Template' },
+        { name: 'Walkthrough checklist', kind: 'Template' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { HorizonProvider } from "@/components/horizon/provider";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { getAllArticles } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -36,36 +41,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const articleCount = getAllArticles().length;
+
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <header className="border-b border-black/10 dark:border-white/10">
-          <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-            <Link href="/" className="font-semibold tracking-tight">
-              {siteConfig.name}
-            </Link>
-            <div className="flex gap-6 text-sm">
-              <Link href="/articles" className="hover:underline">
-                Articles
-              </Link>
-              <Link href="/about" className="hover:underline">
-                About
-              </Link>
-            </div>
-          </nav>
-        </header>
-
-        <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">{children}</main>
-
-        <footer className="border-t border-black/10 py-8 text-sm text-black/60 dark:border-white/10 dark:text-white/60">
-          <div className="mx-auto max-w-3xl px-6">
-            © {new Date().getFullYear()} {siteConfig.name}
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full`}>
+      <body className="min-h-full">
+        <HorizonProvider>
+          <div className="mx-auto flex min-h-screen w-full max-w-[1440px] flex-col bg-bg">
+            <SiteHeader articleCount={articleCount} />
+            <main className="flex flex-1 flex-col">{children}</main>
+            <SiteFooter articleCount={articleCount} />
           </div>
-        </footer>
-
+        </HorizonProvider>
         <Analytics />
       </body>
     </html>
