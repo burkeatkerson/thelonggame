@@ -94,7 +94,7 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
       </div>
 
       <div className="grid min-h-[560px] grid-cols-1 md:grid-cols-[250px_1fr]">
-        <aside className="flex flex-col gap-2.5 border-r border-divider px-6 py-7">
+        <aside className="flex flex-col gap-2.5 border-b border-divider px-6 py-7 md:border-b-0 md:border-r">
           <div className="kicker">Horizon bands</div>
           {STAGES.map((s) => {
             const active = band === s.slug;

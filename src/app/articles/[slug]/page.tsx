@@ -65,7 +65,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
       {/* ── main column ── */}
-      <article className="flex flex-col gap-6 border-r border-divider px-6 pb-20 pt-[52px] md:px-14">
+      <article className="flex flex-col gap-6 px-6 pb-20 pt-[52px] md:px-14 lg:border-r lg:border-divider">
         <header className="flex flex-col gap-3.5">
           <div className="flex flex-wrap items-center gap-2.5">
             <Link

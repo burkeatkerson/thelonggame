@@ -57,7 +57,7 @@ export function InputPanel({
   footnote?: string;
 }) {
   return (
-    <div className="flex flex-col gap-[18px] rounded-md bg-panel p-[26px] shadow-edge">
+    <div className="flex flex-col gap-[18px] rounded-md bg-panel p-5 shadow-edge sm:p-[26px]">
       <div className="kicker">{title}</div>
       {children}
       {footnote ? (
@@ -169,7 +169,7 @@ export function LiveBars({
       <div className="kicker">{title}</div>
       <div className="flex flex-col gap-2">
         {data.map((d) => (
-          <div key={d.label} className="grid grid-cols-[130px_1fr_64px] items-center gap-3">
+          <div key={d.label} className="grid grid-cols-[96px_1fr_56px] items-center gap-2 sm:grid-cols-[130px_1fr_64px] sm:gap-3">
             <span className="text-right text-[12.5px] leading-tight text-neutral-500">{d.label}</span>
             <div className="h-[18px] overflow-hidden rounded-sm bg-[rgba(233,233,237,0.05)]">
               <div

@@ -23,12 +23,12 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
   return (
     <div className="flex flex-col">
       {/* ── hero ── */}
-      <section className="grid grid-cols-1 items-end gap-16 border-b border-divider px-6 pb-16 pt-[88px] md:px-10 lg:grid-cols-[1fr_380px]">
+      <section className="grid grid-cols-1 items-end gap-10 border-b border-divider px-6 pb-12 pt-12 md:px-10 md:pb-16 md:pt-[88px] lg:grid-cols-[1fr_380px] lg:gap-16">
         <div className="flex flex-col gap-[22px]">
           <div className="kicker-accent tracking-[0.14em]">
             Year-indexed · no feed, no backlog
           </div>
-          <h1 className="m-0 max-w-[760px] text-5xl font-medium leading-[0.98] tracking-[-0.035em] md:text-[76px]">
+          <h1 className="m-0 max-w-[760px] text-[40px] font-medium leading-[0.98] tracking-[-0.035em] sm:text-5xl md:text-[76px]">
             Everyone else is playing this quarter.
           </h1>
           <p className="m-0 max-w-[600px] text-[19px] leading-[1.5] text-neutral-400 [text-wrap:pretty]">
@@ -38,7 +38,7 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
             not the day they were published. Set your horizon. Read what&rsquo;s
             actually next.
           </p>
-          <div className="mt-1.5 flex gap-3">
+          <div className="mt-1.5 flex flex-wrap gap-3">
             <Link
               href="/library"
               className="rounded-sm border border-accent px-[22px] py-3 text-[15px] text-accent-300 no-underline transition-colors duration-150 hover:bg-accent-900"
@@ -175,7 +175,7 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
 
       {/* ── closing capture ── */}
       <section className="flex flex-col items-start gap-6 px-6 pb-20 pt-16 md:px-10">
-        <h2 className="m-0 max-w-[720px] text-[44px] font-medium leading-[1.05] tracking-[-0.03em]">
+        <h2 className="m-0 max-w-[720px] text-[32px] font-medium leading-[1.05] tracking-[-0.03em] md:text-[44px]">
           Twenty years is the only edge nobody is competing for.
         </h2>
         <div className="w-full max-w-[520px]">

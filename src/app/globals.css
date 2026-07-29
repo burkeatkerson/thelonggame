@@ -139,6 +139,19 @@ a {
   content: none;
 }
 
+/* markdown tables scroll inside their own container on small screens */
+.prose-longgame table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .prose-longgame table {
+    display: table;
+    white-space: normal;
+  }
+}
+
 /* rehype-pretty-code */
 .prose-longgame pre {
   background: var(--color-panel) !important;
