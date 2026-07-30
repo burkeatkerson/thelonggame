@@ -9,6 +9,7 @@ import { getAllArticles, getArticle, getNextOnRoadmap } from "@/lib/articles";
 import { authorPath, authorUrl } from "@/lib/authors";
 import { stageForYear } from "@/lib/horizon";
 import { pillarBySlug, sectionOf } from "@/lib/pillars";
+import { siteConfig } from "@/lib/site";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
 
 type Params = { slug: string };
@@ -30,12 +31,21 @@ export async function generateMetadata({
     title: article.title,
     description: article.dek,
     authors: [{ name: article.author, url: authorUrl() }],
+    alternates: { canonical: `/articles/${slug}` },
     openGraph: {
       type: "article",
       title: article.title,
       description: article.dek,
+      url: `/articles/${slug}`,
       authors: [article.author],
       tags: article.tags,
+      modifiedTime: article.updated,
+      ...(article.date ? { publishedTime: article.date } : {}),
+    },
+    twitter: {
+      card: "summary",
+      title: article.title,
+      description: article.dek,
     },
   };
 }
@@ -50,15 +60,53 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   const section = article.section ? sectionOf(article.pillar, article.section) : undefined;
   const nextUp = getNextOnRoadmap(article.year).filter((a) => a.slug !== slug);
 
+  const pillar = pillarBySlug(article.pillar);
+  const articleUrl = `${siteConfig.url}/articles/${slug}`;
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.dek,
+    url: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     author: { "@type": "Person", name: article.author, url: authorUrl() },
-    publisher: { "@type": "Organization", name: "The Long Game" },
+    publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     ...(article.date ? { datePublished: article.date } : {}),
+    dateModified: article.updated,
+    articleSection: section ? `${pillar?.name} / ${section.name}` : pillar?.name,
+    timeRequired: `PT${article.mins}M`,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
     keywords: article.tags.join(", "),
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: siteConfig.name, item: siteConfig.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: pillar?.name ?? article.pillar,
+        item: `${siteConfig.url}/${article.pillar}`,
+      },
+      ...(section
+        ? [
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: section.name,
+              item: `${siteConfig.url}/${article.pillar}/${article.section}`,
+            },
+          ]
+        : []),
+      {
+        "@type": "ListItem",
+        position: section ? 4 : 3,
+        name: article.title,
+        item: articleUrl,
+      },
+    ],
   };
 
   return (
@@ -66,6 +114,10 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       {/* ── main column ── */}
       <article className="flex flex-col gap-6 px-6 pb-20 pt-[52px] md:px-14 lg:border-r lg:border-divider">
@@ -79,7 +131,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
               }
               className="font-mono text-[11px] uppercase tracking-[0.1em] text-accent no-underline"
             >
-              ← {pillarBySlug(article.pillar)?.name}
+              ← {pillar?.name}
               {section ? ` / ${section.name}` : ""}
             </Link>
             <span className="kicker">

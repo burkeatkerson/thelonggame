@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const articles = getAllArticles().map((a) => ({
     url: `${siteConfig.url}/articles/${a.slug}`,
+    lastModified: a.updated,
   }));
   const courses = getAllCourses().flatMap((c) => [
     { url: `${siteConfig.url}/courses/${c.slug}` },

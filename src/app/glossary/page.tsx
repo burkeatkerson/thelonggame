@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllArticles } from "@/lib/articles";
+import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Glossary",
@@ -13,8 +14,25 @@ export default function GlossaryPage() {
     .filter((a) => a.type === "glossary")
     .sort((a, b) => a.title.localeCompare(b.title));
 
+  const glossaryJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    name: `${siteConfig.name} glossary`,
+    url: `${siteConfig.url}/glossary`,
+    hasDefinedTerm: entries.map((a) => ({
+      "@type": "DefinedTerm",
+      name: a.title,
+      description: a.dek,
+      url: `${siteConfig.url}/articles/${a.slug}`,
+    })),
+  };
+
   return (
     <div className="flex flex-col gap-7 px-6 pb-20 pt-[52px] md:px-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(glossaryJsonLd) }}
+      />
       <div className="flex flex-col gap-3">
         <div className="kicker-accent">Glossary</div>
         <h1 className="m-0 max-w-[760px] text-4xl font-medium leading-[1.02] tracking-[-0.03em] md:text-5xl">

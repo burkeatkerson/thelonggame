@@ -33,11 +33,15 @@ export type ArticleMeta = {
   draft: boolean;
   /** publication date — recorded, never used for ordering */
   date?: string;
+  /** last time the source file changed — feeds dateModified / lastmod */
+  updated: string;
   mins: number;
 };
 
 function readArticleFile(slug: string): ArticleMeta {
-  const raw = fs.readFileSync(path.join(ARTICLES_DIR, `${slug}.mdx`), "utf8");
+  const filePath = path.join(ARTICLES_DIR, `${slug}.mdx`);
+  const raw = fs.readFileSync(filePath, "utf8");
+  const updated = fs.statSync(filePath).mtime.toISOString();
   const { data, content } = matter(raw);
 
   if (!data.title || data.year === undefined || !data.pillar) {
@@ -75,6 +79,7 @@ function readArticleFile(slug: string): ArticleMeta {
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     draft: data.draft === true,
     date: data.date ? new Date(data.date).toISOString() : undefined,
+    updated,
     mins: Math.max(1, Math.round(readingTime(content).minutes)),
   };
 }

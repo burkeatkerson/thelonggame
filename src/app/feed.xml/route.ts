@@ -17,9 +17,8 @@ export function GET() {
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <dc:creator>${escapeXml(article.author ?? DEFAULT_AUTHOR.name)}</dc:creator>
-      <description>${escapeXml(article.dek)}</description>${
-        article.date ? `\n      <pubDate>${new Date(article.date).toUTCString()}</pubDate>` : ""
-      }
+      <description>${escapeXml(article.dek)}</description>
+      <pubDate>${new Date(article.date ?? article.updated).toUTCString()}</pubDate>
     </item>`;
     })
     .join("\n");

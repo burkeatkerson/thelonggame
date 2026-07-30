@@ -34,6 +34,42 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     url: siteConfig.url,
   },
+  twitter: {
+    card: "summary",
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
+  alternates: {
+    types: { "application/rss+xml": `${siteConfig.url}/feed.xml` },
+  },
+};
+
+/** Site-level entities every page carries — who publishes this, and what it is. */
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteConfig.url}/#organization`,
+      name: siteConfig.name,
+      url: siteConfig.url,
+      description: siteConfig.description,
+      founder: {
+        "@type": "Person",
+        name: "Burke Atkerson",
+        url: `${siteConfig.url}/author/burke-atkerson`,
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.url}/#website`,
+      name: siteConfig.name,
+      url: siteConfig.url,
+      description: siteConfig.description,
+      publisher: { "@id": `${siteConfig.url}/#organization` },
+      inLanguage: "en-US",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -46,6 +82,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="min-h-full">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
         <HorizonProvider>
           <div className="mx-auto flex min-h-screen w-full max-w-[1440px] flex-col bg-bg">
             <SiteHeader articleCount={articleCount} />

@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { TickBar } from "@/components/horizon/tick-bar";
 import { CourseProgressBar, LessonTick } from "@/components/courses/progress";
 import { getAllCourses, getCourse, type CourseMeta, type LessonMeta } from "@/lib/courses";
+import { authorUrl } from "@/lib/authors";
+import { siteConfig } from "@/lib/site";
 
 type Params = { course: string };
 
@@ -19,7 +21,11 @@ export async function generateMetadata({
   const { course: slug } = await params;
   const course = getCourse(slug);
   if (!course) return {};
-  return { title: course.title, description: course.dek };
+  return {
+    title: course.title,
+    description: course.dek,
+    alternates: { canonical: `/courses/${slug}` },
+  };
 }
 
 /** Lessons grouped by declared module; a single unnamed group when none. */
@@ -39,8 +45,35 @@ export default async function CoursePage({ params }: { params: Promise<Params> }
   const groups = groupLessons(course);
   const lessonRefs = course.lessons.map((l) => ({ slug: l.slug, title: l.title }));
 
+  const courseJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: course.title,
+    description: course.dek,
+    url: `${siteConfig.url}/courses/${course.slug}`,
+    provider: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    author: { "@type": "Person", name: "Burke Atkerson", url: authorUrl() },
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: 0, priceCurrency: "USD", category: "Free" },
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "Online",
+      courseWorkload: `PT${course.totalMins}M`,
+    },
+    syllabusSections: course.lessons.map((l) => ({
+      "@type": "Syllabus",
+      name: l.title,
+      description: l.dek,
+      timeRequired: `PT${l.mins}M`,
+    })),
+  };
+
   return (
     <div className="flex flex-col gap-8 px-6 pb-20 pt-[52px] md:px-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }}
+      />
       {/* Course frame: the accent hairline that marks course territory */}
       <div
         aria-hidden
