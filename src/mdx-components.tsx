@@ -1,7 +1,7 @@
 import Image, { type ImageProps } from "next/image";
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
-import { BookCta, BookHook } from "@/components/book-promo";
+import { AmazonCloser, AmazonHook, BookCta, BookHook } from "@/components/book-promo";
 import { BarChart, CompareLines, MoneyFlow, Timeline } from "@/components/mdx/charts";
 import { TOOL_COMPONENTS } from "@/components/tools/registry";
 import {
@@ -25,6 +25,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     CompareLines,
     MoneyFlow,
     Timeline,
+    AmazonCloser,
+    AmazonHook,
     BookCta,
     BookHook,
     Callout,
