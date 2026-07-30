@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import { DEFAULT_AUTHOR } from "@/lib/authors";
 import { clampYear, stageForYear, type StageSlug } from "@/lib/horizon";
 import { isPillarSlug, sectionOf, type PillarSlug } from "@/lib/pillars";
 import { isContentType, type ContentType } from "@/lib/taxonomy";
@@ -27,7 +28,7 @@ export type ArticleMeta = {
   stage: StageSlug;
   stageName: string;
   type: ContentType;
-  author?: string;
+  author: string;
   tags: string[];
   draft: boolean;
   /** publication date — recorded, never used for ordering */
@@ -70,7 +71,7 @@ function readArticleFile(slug: string): ArticleMeta {
     stage: stage.slug,
     stageName: stage.name,
     type,
-    author: data.author ? String(data.author) : undefined,
+    author: data.author ? String(data.author) : DEFAULT_AUTHOR.name,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     draft: data.draft === true,
     date: data.date ? new Date(data.date).toISOString() : undefined,

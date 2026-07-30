@@ -32,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/glossary` },
     { url: `${siteConfig.url}/start` },
     { url: `${siteConfig.url}/about` },
+    { url: `${siteConfig.url}/author/burke-atkerson` },
     ...articles,
     ...courses,
     ...tools,

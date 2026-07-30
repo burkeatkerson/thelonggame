@@ -1,4 +1,5 @@
 import { getAllArticles } from "@/lib/articles";
+import { DEFAULT_AUTHOR } from "@/lib/authors";
 import { siteConfig } from "@/lib/site";
 
 function escapeXml(value: string): string {
@@ -15,6 +16,7 @@ export function GET() {
       <title>${escapeXml(article.title)}</title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
+      <dc:creator>${escapeXml(article.author ?? DEFAULT_AUTHOR.name)}</dc:creator>
       <description>${escapeXml(article.dek)}</description>${
         article.date ? `\n      <pubDate>${new Date(article.date).toUTCString()}</pubDate>` : ""
       }
@@ -23,7 +25,7 @@ export function GET() {
     .join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>${escapeXml(siteConfig.name)}</title>
     <link>${siteConfig.url}</link>

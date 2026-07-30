@@ -5,6 +5,7 @@ import { EmailCapture } from "@/components/email-capture";
 import { TickBar } from "@/components/horizon/tick-bar";
 import { ToolCallout } from "@/components/tool-callout";
 import { getAllArticles, getArticle, getNextOnRoadmap } from "@/lib/articles";
+import { authorPath, authorUrl } from "@/lib/authors";
 import { stageForYear } from "@/lib/horizon";
 import { pillarBySlug, sectionOf } from "@/lib/pillars";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
@@ -27,11 +28,12 @@ export async function generateMetadata({
   return {
     title: article.title,
     description: article.dek,
+    authors: [{ name: article.author, url: authorUrl() }],
     openGraph: {
       type: "article",
       title: article.title,
       description: article.dek,
-      authors: article.author ? [article.author] : undefined,
+      authors: [article.author],
       tags: article.tags,
     },
   };
@@ -52,7 +54,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
     "@type": "Article",
     headline: article.title,
     description: article.dek,
-    author: { "@type": "Person", name: article.author ?? "The Long Game" },
+    author: { "@type": "Person", name: article.author, url: authorUrl() },
     publisher: { "@type": "Organization", name: "The Long Game" },
     ...(article.date ? { datePublished: article.date } : {}),
     keywords: article.tags.join(", "),
@@ -92,8 +94,14 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
             </p>
           ) : null}
           <div className="font-mono text-[11px] text-neutral-600">
-            {article.mins} min
-            {article.author ? ` · ${article.author}` : ""}
+            {article.mins} min ·{" "}
+            <Link
+              href={authorPath()}
+              className="text-neutral-500 no-underline transition-colors hover:text-accent"
+              rel="author"
+            >
+              {article.author}
+            </Link>
           </div>
         </header>
 
