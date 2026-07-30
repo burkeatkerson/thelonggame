@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { BookRail } from "@/components/book-promo";
 import { EmailCapture } from "@/components/email-capture";
 import { TickBar } from "@/components/horizon/tick-bar";
 import { ToolCallout } from "@/components/tool-callout";
@@ -157,6 +158,8 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
           </div>
           <EmailCapture cta="Send the sequence" compact />
         </div>
+
+        <BookRail />
       </aside>
     </div>
   );

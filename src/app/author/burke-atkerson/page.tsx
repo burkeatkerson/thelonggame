@@ -72,6 +72,15 @@ export default function AuthorPage() {
           clock.
         </p>
         <p>
+          He runs the playbook he writes about: CEO of <strong>Flip Lift</strong>,
+          a turnkey fix-and-flip company; managing partner at{" "}
+          <strong>Impact Investment Partners</strong>, raising capital for
+          low-risk, real-estate-backed investments; and founder of{" "}
+          <strong>Fire Nights</strong>, a men&rsquo;s mental health movement built
+          to support and foster resilience — because the twenty-year game is
+          played by whole people, not spreadsheets.
+        </p>
+        <p>
           The writing here holds itself to two standards at once. It is{" "}
           <strong>hopeful about the long term</strong>, because the twenty-year math
           genuinely rewards ordinary discipline. And it is{" "}
@@ -108,6 +117,21 @@ export default function AuthorPage() {
           <span className="kicker mt-1.5">Pillars, in funding order</span>
         </div>
       </div>
+
+      <Link
+        href="/book"
+        className="flex max-w-[780px] cursor-pointer flex-col gap-2 rounded-md bg-panel p-6 text-inherit no-underline shadow-edge-accent-deep transition-[box-shadow] duration-150 hover:shadow-edge-accent"
+      >
+        <span className="kicker-accent">The book</span>
+        <span className="text-[19px] font-medium leading-[1.3] tracking-[-0.01em]">
+          The Long Game: The 20-Year Roadmap to Building Tax-Free Wealth Through
+          Scalable Real Estate Strategies
+        </span>
+        <span className="font-mono text-[11px] text-neutral-500">
+          ★ 4.9 on Amazon · 99 ratings · 204 pages · Kindle, paperback & hardcover
+        </span>
+        <span className="text-sm text-accent">About the book →</span>
+      </Link>
 
       <section className="flex max-w-[780px] flex-col gap-3">
         <div className="kicker">Latest writing</div>
