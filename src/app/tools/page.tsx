@@ -4,6 +4,7 @@ import { stageBySlug } from "@/lib/horizon";
 import { TOOLS } from "@/lib/tools";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/tools" },
   title: "The numbers",
   description:
     "Calculators and worksheets — the same numbers every lender runs, filed against the year of the roadmap they belong to.",

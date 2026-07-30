@@ -26,6 +26,7 @@ export async function generateMetadata({
   return {
     title: `${found.lesson.title} — ${found.course.title}`,
     description: found.lesson.dek,
+    alternates: { canonical: `/courses/${course}/${lesson}` },
   };
 }
 

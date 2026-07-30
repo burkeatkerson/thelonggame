@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getAllCourses } from "@/lib/courses";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/courses" },
   title: "Courses",
   description:
     "Structured sequences for the gates of the roadmap — when a stack of articles isn't enough and you need the steps in order.",

@@ -23,7 +23,11 @@ export async function generateMetadata({
   const pillar = pillarBySlug(pillarSlug);
   const section = pillar && sectionOf(pillar.slug, sectionSlug);
   if (!pillar || !section) return {};
-  return { title: `${section.name} — ${pillar.name}`, description: section.dek };
+  return {
+    title: `${section.name} — ${pillar.name}`,
+    description: section.dek,
+    alternates: { canonical: `/${pillar.slug}/${section.slug}` },
+  };
 }
 
 export default async function SectionPage({ params }: { params: Promise<Params> }) {

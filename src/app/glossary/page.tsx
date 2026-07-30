@@ -4,6 +4,7 @@ import { getAllArticles } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/glossary" },
   title: "Glossary",
   description:
     "Terms defined the way they behave on an actual closing statement — each filed to the year of the plan where you first need it.",

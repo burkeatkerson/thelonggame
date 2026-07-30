@@ -5,6 +5,7 @@ import { PILLARS, pillarBySlug } from "@/lib/pillars";
 import { PILLAR_COLORS, pillarForYear } from "@/lib/pillar-colors";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/roadmap" },
   title: "The roadmap",
   description:
     "Four pillars over twenty years — the framework behind the book and every piece on this site.",

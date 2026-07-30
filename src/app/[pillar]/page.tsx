@@ -22,7 +22,11 @@ export async function generateMetadata({
   const { pillar: slug } = await params;
   const pillar = pillarBySlug(slug);
   if (!pillar) return {};
-  return { title: pillar.name, description: pillar.dek };
+  return {
+    title: pillar.name,
+    description: pillar.dek,
+    alternates: { canonical: `/${pillar.slug}` },
+  };
 }
 
 export default async function PillarPage({ params }: { params: Promise<Params> }) {

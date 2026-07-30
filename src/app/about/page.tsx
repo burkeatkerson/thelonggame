@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PILLARS } from "@/lib/pillars";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About",
   description: "Why this site is built on four pillars and a twenty-year clock.",
 };

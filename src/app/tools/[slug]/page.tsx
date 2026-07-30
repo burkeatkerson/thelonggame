@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { TOOL_COMPONENTS } from "@/components/tools/registry";
 import { pillarBySlug } from "@/lib/pillars";
 import { getReadyTools, getTool } from "@/lib/tools";
+import { siteConfig } from "@/lib/site";
 
 type Params = { slug: string };
 
@@ -18,7 +19,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const tool = getTool(slug);
   if (!tool) return {};
-  return { title: tool.name, description: tool.dek };
+  return {
+    title: tool.name,
+    description: tool.dek,
+    alternates: { canonical: `/tools/${slug}` },
+  };
 }
 
 export default async function ToolPage({ params }: { params: Promise<Params> }) {
@@ -29,8 +34,25 @@ export default async function ToolPage({ params }: { params: Promise<Params> }) 
 
   const pillar = pillarBySlug(tool.pillar);
 
+  const toolJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: tool.name,
+    description: tool.dek,
+    url: `${siteConfig.url}/tools/${tool.slug}`,
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: 0, priceCurrency: "USD" },
+    provider: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+  };
+
   return (
     <div className="flex flex-col gap-7 px-6 pb-20 pt-[52px] md:px-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolJsonLd) }}
+      />
       <div className="flex flex-col gap-3">
         <div className="kicker-accent">
           The numbers · {tool.name} · {pillar?.short}
