@@ -6,7 +6,7 @@
  * normal-vision floor, contrast): all pass.
  */
 
-const SERIES = ["#8d7ce6", "#1ca87f", "#c07b2e"]; // blurple · teal · amber
+const SERIES = ["#9184d9", "#4fc99a", "#d9a25f", "#d4c078"]; // the pillar spectrum
 const GRID = "rgba(233,233,237,0.08)";
 const TEXT_MUTED = "#9397ab";
 const TEXT_FAINT = "#75798c";

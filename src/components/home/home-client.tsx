@@ -1,15 +1,72 @@
 "use client";
 
 import Link from "next/link";
+import { useSyncExternalStore } from "react";
 import { ArticleCard } from "@/components/article-card";
 import { EmailCapture } from "@/components/email-capture";
 import { useHorizon } from "@/components/horizon/provider";
 import { ToolCallout } from "@/components/tool-callout";
 import { PILLARS } from "@/lib/pillars";
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
 import type { ArticleMeta } from "@/lib/articles";
+
+const MILESTONES_KEY = "tlg-milestones";
+
+/* Milestones cleared in this browser — a tiny external store over
+   localStorage, same no-account model (and same hydration pattern) as the
+   horizon provider. */
+const milestoneListeners = new Set<() => void>();
+const EMPTY: Set<string> = new Set();
+let milestoneCache: { raw: string | null; set: Set<string> } = { raw: null, set: EMPTY };
+
+function subscribeMilestones(listener: () => void) {
+  milestoneListeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    milestoneListeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+function getMilestones(): Set<string> {
+  let raw: string | null = null;
+  try {
+    raw = window.localStorage.getItem(MILESTONES_KEY);
+  } catch {
+    /* private mode etc. — checkboxes just don't persist */
+  }
+  if (raw !== milestoneCache.raw) {
+    let set = EMPTY;
+    try {
+      set = raw ? new Set(JSON.parse(raw) as string[]) : EMPTY;
+    } catch {
+      set = EMPTY;
+    }
+    milestoneCache = { raw, set };
+  }
+  return milestoneCache.set;
+}
+
+function toggleMilestoneInStore(m: string) {
+  const next = new Set(getMilestones());
+  if (next.has(m)) next.delete(m);
+  else next.add(m);
+  try {
+    window.localStorage.setItem(MILESTONES_KEY, JSON.stringify([...next]));
+  } catch {
+    /* ignore */
+  }
+  milestoneListeners.forEach((l) => l());
+}
+
+function useMilestones(): [Set<string>, (m: string) => void] {
+  const done = useSyncExternalStore(subscribeMilestones, getMilestones, () => EMPTY);
+  return [done, toggleMilestoneInStore];
+}
 
 export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
   const { year, stage } = useHorizon();
+  const [done, toggleMilestone] = useMilestones();
   const near = articles.filter((a) => Math.abs(a.year - year) <= 1);
   const total = articles.length;
 
@@ -41,7 +98,7 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
   return (
     <div className="flex flex-col">
       {/* ── hero ── */}
-      <section className="grid grid-cols-1 items-end gap-10 border-b border-divider px-6 pb-12 pt-12 md:px-10 md:pb-16 md:pt-[88px] lg:grid-cols-[1fr_380px] lg:gap-16">
+      <section className="wash-accent grid grid-cols-1 items-end gap-10 border-b border-divider px-6 pb-12 pt-12 md:px-10 md:pb-16 md:pt-[88px] lg:grid-cols-[1fr_380px] lg:gap-16">
         <div className="flex flex-col gap-[22px]">
           <div className="kicker-accent tracking-[0.14em]">
             The 20-year real estate roadmap · free, in order
@@ -123,12 +180,45 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
             <div className="kicker pt-3">
               Clear these before Year {Math.min(year + 1, 20)}
             </div>
-            {stage.milestones.map((m) => (
-              <div key={m} className="flex items-start gap-[11px]">
-                <span className="mt-1 h-[15px] w-[15px] flex-none rounded-sm border border-neutral-600" />
-                <span className="text-[15px] [text-wrap:pretty]">{m}</span>
-              </div>
-            ))}
+            {stage.milestones.map((m) => {
+              const checked = done.has(m);
+              return (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => toggleMilestone(m)}
+                  aria-pressed={checked}
+                  className="flex cursor-pointer items-start gap-[11px] text-left"
+                >
+                  <span
+                    className={`mt-1 flex h-[15px] w-[15px] flex-none items-center justify-center rounded-sm border transition-colors duration-150 ${
+                      checked
+                        ? "border-cashflow bg-cashflow-900 text-cashflow"
+                        : "border-neutral-600"
+                    }`}
+                  >
+                    {checked ? (
+                      <svg aria-hidden width="9" height="9" viewBox="0 0 9 9" fill="none">
+                        <path
+                          d="M1.5 4.5 3.5 6.5 7.5 2"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : null}
+                  </span>
+                  <span
+                    className={`text-[15px] [text-wrap:pretty] ${
+                      checked ? "text-neutral-600 line-through decoration-neutral-700" : ""
+                    }`}
+                  >
+                    {m}
+                  </span>
+                </button>
+              );
+            })}
           </div>
           <div className="font-mono text-[11px] leading-[1.6] text-neutral-600">
             Wrong year? Drag the bar at the top — everything on this page
@@ -167,7 +257,7 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
       </section>
 
       {/* ── stat band — the one saturated field ── */}
-      <section className="grid grid-cols-2 gap-8 bg-section px-6 py-11 md:px-10 lg:grid-cols-4">
+      <section className="band-lit grid grid-cols-2 gap-8 px-6 py-11 md:px-10 lg:grid-cols-4">
         {stats.map((s) => (
           <div key={s.label} className="flex flex-col gap-1">
             <div className="text-[44px] font-medium leading-none tracking-[-0.03em]">
@@ -194,23 +284,27 @@ export function HomeClient({ articles }: { articles: ArticleMeta[] }) {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {PILLARS.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/${p.slug}`}
-              className="flex cursor-pointer flex-col gap-2 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:shadow-edge-accent"
-            >
-              <span className="kicker-accent">
-                Pillar {p.order} · {p.years}
-              </span>
-              <span className="text-[19px] font-medium leading-[1.22] tracking-[-0.015em]">
-                {p.name}
-              </span>
-              <span className="text-[13px] leading-[1.45] text-neutral-500">
-                {p.tagline}.
-              </span>
-            </Link>
-          ))}
+          {PILLARS.map((p) => {
+            const c = PILLAR_COLORS[p.slug];
+            return (
+              <Link
+                key={p.slug}
+                href={`/${p.slug}`}
+                className={`flex cursor-pointer flex-col gap-2 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 ${c.glow}`}
+              >
+                <span className={`kicker flex items-center gap-1.5 ${c.text}`}>
+                  <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${c.dot}`} />
+                  Pillar {p.order} · {p.years}
+                </span>
+                <span className="text-[19px] font-medium leading-[1.22] tracking-[-0.015em]">
+                  {p.name}
+                </span>
+                <span className="text-[13px] leading-[1.45] text-neutral-500">
+                  {p.tagline}.
+                </span>
+              </Link>
+            );
+          })}
         </div>
         <Link href="/roadmap" className="text-[13px] text-accent no-underline">
           See the pillars laid over the twenty-year clock →

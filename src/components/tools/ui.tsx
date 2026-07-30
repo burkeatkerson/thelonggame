@@ -8,7 +8,9 @@ import { money, moneyShort } from "@/lib/finance";
  * chart primitives in the validated Nocturne series palette.
  */
 
-export const SERIES = ["#8d7ce6", "#1ca87f", "#c07b2e"];
+// Drawn from the pillar spectrum (src/lib/pillar-colors.ts) so charts and
+// site speak one color language: violet, green, amber, gold.
+export const SERIES = ["#9184d9", "#4fc99a", "#d9a25f", "#d4c078"];
 
 export function SliderInput({
   label,
@@ -71,17 +73,25 @@ export function InputPanel({
 
 export type Grade = "good" | "ok" | "bad" | "neutral";
 
+/* green means good, amber means marginal, red-rose means walk away —
+   ring + faint tinted ground so a verdict reads before the number does */
 const GRADE_TEXT: Record<Grade, string> = {
   good: "text-good",
-  ok: "text-ink",
+  ok: "text-caution",
   bad: "text-warn",
   neutral: "text-ink",
 };
 const GRADE_RING: Record<Grade, string> = {
-  good: "shadow-edge-accent",
-  ok: "shadow-edge",
-  bad: "shadow-[0_0_0_1px_#7a4f4f]",
+  good: "shadow-[0_0_0_1px_#2e7f62]",
+  ok: "shadow-[0_0_0_1px_#96683a]",
+  bad: "shadow-[0_0_0_1px_#8f4f4f]",
   neutral: "shadow-edge",
+};
+const GRADE_BG: Record<Grade, string> = {
+  good: "bg-[linear-gradient(rgba(79,201,154,0.05),rgba(79,201,154,0.05))] bg-surface",
+  ok: "bg-[linear-gradient(rgba(217,162,95,0.05),rgba(217,162,95,0.05))] bg-surface",
+  bad: "bg-[linear-gradient(rgba(217,127,127,0.05),rgba(217,127,127,0.05))] bg-surface",
+  neutral: "bg-surface",
 };
 
 export function MetricTile({
@@ -96,7 +106,7 @@ export function MetricTile({
   grade?: Grade;
 }) {
   return (
-    <div className={`flex flex-col gap-1.5 rounded-md bg-surface p-6 ${GRADE_RING[grade]}`}>
+    <div className={`flex flex-col gap-1.5 rounded-md p-6 ${GRADE_BG[grade]} ${GRADE_RING[grade]}`}>
       <div className="kicker">{label}</div>
       <div className={`text-[38px] font-medium leading-none tracking-[-0.03em] ${GRADE_TEXT[grade]}`}>
         {value}

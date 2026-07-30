@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { STAGES } from "@/lib/horizon";
 import { PILLARS, isPillarSlug, type PillarSlug } from "@/lib/pillars";
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
 import { CONTENT_TYPES, CONTENT_TYPE_ORDER, type ContentType } from "@/lib/taxonomy";
 import type { ArticleMeta } from "@/lib/articles";
 
@@ -69,16 +70,23 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
           />
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          {PILLARS.map((p) => (
-            <button
-              key={p.slug}
-              type="button"
-              onClick={() => setPillar(pillar === p.slug ? null : p.slug)}
-              className={chip(pillar === p.slug)}
-            >
-              {p.short}
-            </button>
-          ))}
+          {PILLARS.map((p) => {
+            const c = PILLAR_COLORS[p.slug];
+            const active = pillar === p.slug;
+            return (
+              <button
+                key={p.slug}
+                type="button"
+                onClick={() => setPillar(active ? null : p.slug)}
+                className={`flex cursor-pointer items-center gap-1.5 rounded-[20px] px-[13px] py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] transition-all duration-150 ${
+                  active ? `${c.badge} shadow-edge-strong` : "bg-transparent text-neutral-400 shadow-edge"
+                }`}
+              >
+                <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${c.dot} ${active ? "" : "opacity-60"}`} />
+                {p.short}
+              </button>
+            );
+          })}
           <span className="mx-1 h-5 w-px bg-divider" />
           {(["everything", ...CONTENT_TYPE_ORDER] as Facet[]).map((f) => (
             <button
@@ -139,7 +147,10 @@ export function LibraryClient({ articles }: { articles: ArticleMeta[] }) {
                   <span className="text-xs text-neutral-600 [text-wrap:pretty]">{a.dek}</span>
                 ) : null}
               </span>
-              <span className="hidden font-mono text-[10px] uppercase tracking-[0.06em] text-neutral-500 md:block">
+              <span
+                className={`hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.06em] text-neutral-500 md:flex`}
+              >
+                <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${PILLAR_COLORS[a.pillar].dot}`} />
                 {PILLARS.find((p) => p.slug === a.pillar)?.short}
               </span>
               <span className="hidden text-xs text-neutral-500 md:block">{a.stageName}</span>

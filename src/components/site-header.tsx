@@ -6,13 +6,16 @@ import { useState } from "react";
 import { useHorizon } from "@/components/horizon/provider";
 import { TickBar } from "@/components/horizon/tick-bar";
 
-const NAV = [
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
+import type { PillarSlug } from "@/lib/pillars";
+
+const NAV: Array<{ label: string; href: string; pillar?: PillarSlug }> = [
   { label: "Horizon", href: "/" },
   { label: "Roadmap", href: "/roadmap" },
-  { label: "Mindset", href: "/mindset" },
-  { label: "Capital", href: "/capital" },
-  { label: "Cashflow", href: "/cashflow" },
-  { label: "Wealth", href: "/wealth" },
+  { label: "Mindset", href: "/mindset", pillar: "mindset" },
+  { label: "Capital", href: "/capital", pillar: "capital" },
+  { label: "Cashflow", href: "/cashflow", pillar: "cashflow" },
+  { label: "Wealth", href: "/wealth", pillar: "wealth" },
   { label: "Library", href: "/library" },
   { label: "Numbers", href: "/tools" },
   { label: "Book", href: "/book" },
@@ -40,20 +43,32 @@ export function SiteHeader({ articleCount }: { articleCount: number }) {
             The Long&nbsp;Game
           </Link>
           <nav className="hidden gap-4 text-sm lg:flex xl:gap-[26px]">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive(pathname, item.href) ? "page" : undefined}
-                className={`border-b pb-[3px] no-underline transition-colors duration-150 hover:text-ink ${
-                  isActive(pathname, item.href)
-                    ? "border-accent text-ink"
-                    : "border-transparent text-neutral-400"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV.map((item) => {
+              const active = isActive(pathname, item.href);
+              const activeBorder = item.pillar
+                ? PILLAR_COLORS[item.pillar].border
+                : "border-accent";
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex items-center gap-1.5 border-b pb-[3px] no-underline transition-colors duration-150 hover:text-ink ${
+                    active ? `${activeBorder} text-ink` : "border-transparent text-neutral-400"
+                  }`}
+                >
+                  {item.pillar ? (
+                    <span
+                      aria-hidden
+                      className={`h-[5px] w-[5px] rounded-full ${PILLAR_COLORS[item.pillar].dot} ${
+                        active ? "" : "opacity-60"
+                      }`}
+                    />
+                  ) : null}
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
@@ -98,10 +113,16 @@ export function SiteHeader({ articleCount }: { articleCount: number }) {
               href={item.href}
               onClick={close}
               aria-current={isActive(pathname, item.href) ? "page" : undefined}
-              className={`border-b border-divider-faint py-3 text-[15px] no-underline ${
+              className={`flex items-center gap-2 border-b border-divider-faint py-3 text-[15px] no-underline ${
                 isActive(pathname, item.href) ? "text-accent" : "text-ink"
               }`}
             >
+              {item.pillar ? (
+                <span
+                  aria-hidden
+                  className={`h-[5px] w-[5px] rounded-full ${PILLAR_COLORS[item.pillar].dot}`}
+                />
+              ) : null}
               {item.label}
             </Link>
           ))}

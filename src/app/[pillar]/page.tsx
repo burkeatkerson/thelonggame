@@ -5,6 +5,7 @@ import { getArticlesForPillar } from "@/lib/articles";
 import { getAllCourses } from "@/lib/courses";
 import { getToolsForPillar } from "@/lib/tools";
 import { PILLARS, pillarBySlug } from "@/lib/pillars";
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
 
 type Params = { pillar: string };
@@ -36,11 +37,15 @@ export default async function PillarPage({ params }: { params: Promise<Params> }
     articles.filter((a) => a.section === section).length;
 
   const others = PILLARS.filter((p) => p.slug !== pillar.slug);
+  const c = PILLAR_COLORS[pillar.slug];
 
   return (
     <div className="flex flex-col">
-      <header className="flex flex-col gap-[18px] border-b border-divider px-6 pb-10 pt-14 md:px-10">
-        <div className="kicker-accent">
+      <header
+        className={`flex flex-col gap-[18px] border-b border-divider px-6 pb-10 pt-14 md:px-10 ${c.wash}`}
+      >
+        <div className={`kicker flex items-center gap-2 ${c.text}`}>
+          <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${c.dot}`} />
           Pillar {pillar.order} of 4 · {pillar.years}
         </div>
         <h1 className="m-0 max-w-[760px] text-4xl font-medium leading-[1.02] tracking-[-0.03em] md:text-5xl">
@@ -76,7 +81,7 @@ export default async function PillarPage({ params }: { params: Promise<Params> }
               <Link
                 key={section.slug}
                 href={`/${pillar.slug}/${section.slug}`}
-                className="flex cursor-pointer flex-col gap-2.5 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:shadow-edge-accent"
+                className={`flex cursor-pointer flex-col gap-2.5 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 ${c.glow}`}
               >
                 {inner}
               </Link>
@@ -106,7 +111,7 @@ export default async function PillarPage({ params }: { params: Promise<Params> }
             href={`/articles/${a.slug}`}
             className="-mx-3.5 grid cursor-pointer grid-cols-[44px_1fr] items-center gap-[18px] rounded-[6px] border-b border-divider-faint px-3.5 py-[13px] text-inherit no-underline transition-colors duration-150 hover:bg-panel md:grid-cols-[44px_1fr_140px_96px_58px]"
           >
-            <span className="font-mono text-xs text-accent">Y{a.year}</span>
+            <span className={`font-mono text-xs ${c.text}`}>Y{a.year}</span>
             <span className="flex flex-col gap-0.5">
               <span className="text-[17px] tracking-[-0.01em] [text-wrap:pretty]">{a.title}</span>
               {a.dek ? (
@@ -174,17 +179,23 @@ export default async function PillarPage({ params }: { params: Promise<Params> }
       <section className="flex flex-col gap-4 px-6 py-10 md:px-10">
         <div className="kicker">The other pillars</div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {others.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/${p.slug}`}
-              className="flex cursor-pointer flex-col gap-1.5 rounded-md bg-panel p-5 text-inherit no-underline shadow-edge transition-[box-shadow] duration-150 hover:shadow-edge-accent"
-            >
-              <span className="kicker-accent">Pillar {p.order}</span>
-              <span className="text-[17px] font-medium tracking-[-0.015em]">{p.name}</span>
-              <span className="text-[13px] text-neutral-500">{p.tagline}.</span>
-            </Link>
-          ))}
+          {others.map((p) => {
+            const oc = PILLAR_COLORS[p.slug];
+            return (
+              <Link
+                key={p.slug}
+                href={`/${p.slug}`}
+                className={`flex cursor-pointer flex-col gap-1.5 rounded-md bg-panel p-5 text-inherit no-underline shadow-edge transition-[box-shadow] duration-150 ${oc.glow}`}
+              >
+                <span className={`kicker flex items-center gap-1.5 ${oc.text}`}>
+                  <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${oc.dot}`} />
+                  Pillar {p.order}
+                </span>
+                <span className="text-[17px] font-medium tracking-[-0.015em]">{p.name}</span>
+                <span className="text-[13px] text-neutral-500">{p.tagline}.</span>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </div>

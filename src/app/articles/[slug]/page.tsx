@@ -9,6 +9,7 @@ import { getAllArticles, getArticle, getNextOnRoadmap } from "@/lib/articles";
 import { authorPath, authorUrl } from "@/lib/authors";
 import { stageForYear } from "@/lib/horizon";
 import { pillarBySlug, sectionOf } from "@/lib/pillars";
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
 import { siteConfig } from "@/lib/site";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
 
@@ -129,8 +130,12 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
                   ? `/${article.pillar}/${article.section}`
                   : `/${article.pillar}`
               }
-              className="font-mono text-[11px] uppercase tracking-[0.1em] text-accent no-underline"
+              className={`flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.1em] no-underline ${PILLAR_COLORS[article.pillar].text}`}
             >
+              <span
+                aria-hidden
+                className={`h-[5px] w-[5px] rounded-full ${PILLAR_COLORS[article.pillar].dot}`}
+              />
               ← {pillar?.name}
               {section ? ` / ${section.name}` : ""}
             </Link>

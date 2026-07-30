@@ -45,9 +45,36 @@
   --color-section-hover: #2c3170;
   --color-section-glow: #353b80;
 
-  /* semantic (calculator verdicts) */
-  --color-good: #b5abfc;
-  --color-warn: #c98b8b;
+  /* ── the pillar spectrum ─────────────────────────────────────────────
+     Each pillar owns a hue, used Nocturne-style: line, glow, tint — never
+     a flood. Mindset inherits the brand accent; the other three sit at
+     matched lightness so no pillar shouts over another. */
+  --color-mindset: #9184d9;
+  --color-mindset-300: #d2cefd;
+  --color-mindset-700: #5d5294;
+  --color-mindset-900: #2b2741;
+
+  --color-capital: #d9a25f;
+  --color-capital-300: #ecc394;
+  --color-capital-700: #96683a;
+  --color-capital-900: #382c1c;
+
+  --color-cashflow: #4fc99a;
+  --color-cashflow-300: #93dfc0;
+  --color-cashflow-700: #2e7f62;
+  --color-cashflow-900: #16302a;
+
+  --color-wealth: #d4c078;
+  --color-wealth-300: #e6d9a3;
+  --color-wealth-700: #8f8050;
+  --color-wealth-900: #322d1c;
+
+  /* semantic (calculator verdicts) — green means good, amber means close,
+     red-rose means walk away. Shared with the cashflow/capital families so
+     the whole site speaks one color language. */
+  --color-good: #4fc99a;
+  --color-caution: #d9a25f;
+  --color-warn: #d97f7f;
 
   --color-divider: rgba(233, 233, 237, 0.1);
   --color-divider-faint: rgba(233, 233, 237, 0.07);
@@ -63,6 +90,16 @@
   --shadow-edge-strong: 0 0 0 1px #595d6c;
   --shadow-edge-accent: 0 0 0 1px #9184d9;
   --shadow-edge-accent-deep: 0 0 0 1px #423a6a;
+
+  /* pillar hover treatment — 1px ring in the pillar's hue plus a soft
+     under-bloom, so lifted cards feel lit rather than outlined */
+  --shadow-glow-mindset: 0 0 0 1px #9184d9, 0 10px 32px -10px rgba(145, 132, 217, 0.35);
+  --shadow-glow-capital: 0 0 0 1px #b07c42, 0 10px 32px -10px rgba(217, 162, 95, 0.3);
+  --shadow-glow-cashflow: 0 0 0 1px #379976, 0 10px 32px -10px rgba(79, 201, 154, 0.28);
+  --shadow-glow-wealth: 0 0 0 1px #a8965c, 0 10px 32px -10px rgba(212, 192, 120, 0.28);
+  --shadow-glow-accent: 0 0 0 1px #9184d9, 0 10px 32px -10px rgba(145, 132, 217, 0.35);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body {
@@ -87,6 +124,40 @@ a {
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* ── atmosphere washes ────────────────────────────────────────────────
+   Very low-alpha radial grounds behind heroes and hub headers. The hue
+   whispers which pillar you are standing in; the ground stays dark. */
+.wash-accent {
+  background:
+    radial-gradient(ellipse 90% 70% at 18% -10%, rgba(145, 132, 217, 0.09), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 110%, rgba(38, 42, 96, 0.35), transparent 65%);
+}
+.wash-mindset {
+  background: radial-gradient(ellipse 85% 75% at 20% -12%, rgba(145, 132, 217, 0.1), transparent 62%);
+}
+.wash-capital {
+  background: radial-gradient(ellipse 85% 75% at 20% -12%, rgba(217, 162, 95, 0.09), transparent 62%);
+}
+.wash-cashflow {
+  background: radial-gradient(ellipse 85% 75% at 20% -12%, rgba(79, 201, 154, 0.08), transparent 62%);
+}
+.wash-wealth {
+  background: radial-gradient(ellipse 85% 75% at 20% -12%, rgba(212, 192, 120, 0.08), transparent 62%);
+}
+
+/* stat band — lit from the top edge instead of flat-painted */
+.band-lit {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.045), transparent 38%),
+    var(--color-section);
 }
 
 /* mono kickers — the JetBrains Mono uppercase label used everywhere */

@@ -1,15 +1,19 @@
 import Link from "next/link";
 import type { ArticleMeta } from "@/lib/articles";
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
 
 export function ArticleCard({ article }: { article: ArticleMeta }) {
+  const c = PILLAR_COLORS[article.pillar];
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="flex cursor-pointer flex-col gap-2.5 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:shadow-edge-accent"
+      className={`flex cursor-pointer flex-col gap-2.5 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 ${c.glow}`}
     >
       <span className="flex items-center gap-2">
-        <span className="rounded-sm bg-accent-900 px-[7px] py-[3px] font-mono text-[10px] uppercase tracking-[0.08em] text-accent-300">
+        <span
+          className={`rounded-sm px-[7px] py-[3px] font-mono text-[10px] uppercase tracking-[0.08em] ${c.badge}`}
+        >
           {CONTENT_TYPES[article.type].name}
         </span>
         <span className="font-mono text-[11px] text-neutral-600">

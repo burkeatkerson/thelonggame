@@ -39,7 +39,7 @@ export function DealAnalyzer() {
   const dscr = noi / debt;
 
   const color = (v: number, good: number, fair: number) =>
-    v >= good ? "text-good" : v >= fair ? "text-ink" : "text-warn";
+    v >= good ? "text-good" : v >= fair ? "text-caution" : "text-warn";
   const ring = (v: number, good: number, fair: number) =>
     v >= good
       ? "shadow-edge-accent"

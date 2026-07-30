@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { STAGES } from "@/lib/horizon";
 import { PILLARS, pillarBySlug } from "@/lib/pillars";
+import { PILLAR_COLORS, pillarForYear } from "@/lib/pillar-colors";
 
 export const metadata: Metadata = {
   title: "The roadmap",
@@ -27,13 +28,16 @@ export default function RoadmapPage() {
 
       {/* the four pillars */}
       <section className="grid grid-cols-1 gap-4 border-b border-divider px-6 py-10 md:grid-cols-2 md:px-10 xl:grid-cols-4">
-        {PILLARS.map((p) => (
+        {PILLARS.map((p) => {
+          const c = PILLAR_COLORS[p.slug];
+          return (
           <Link
             key={p.slug}
             href={`/${p.slug}`}
-            className="flex cursor-pointer flex-col gap-2.5 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 hover:shadow-edge-accent"
+            className={`flex cursor-pointer flex-col gap-2.5 rounded-md bg-surface p-[22px] text-inherit no-underline shadow-edge transition-[box-shadow,transform] duration-150 hover:-translate-y-0.5 ${c.glow}`}
           >
-            <span className="kicker-accent">
+            <span className={`kicker flex items-center gap-1.5 ${c.text}`}>
+              <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${c.dot}`} />
               Pillar {p.order} · {p.years}
             </span>
             <span className="text-[21px] font-medium leading-[1.2] tracking-[-0.015em]">
@@ -47,7 +51,34 @@ export default function RoadmapPage() {
               {p.sections.length} strategy areas →
             </span>
           </Link>
-        ))}
+          );
+        })}
+      </section>
+
+      {/* the twenty years, colored by who carries them */}
+      <section className="flex flex-col gap-3 border-b border-divider px-6 py-10 md:px-10">
+        <div className="kicker">Who carries which years</div>
+        <div className="flex items-end gap-[3px]" style={{ height: 34 }}>
+          {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => {
+            const p = pillarForYear(n);
+            return (
+              <span key={n} title={`Y${n} · ${pillarBySlug(p)!.short}`} className="flex h-full flex-1 items-end">
+                <span
+                  className="block w-full rounded-t-[2px]"
+                  style={{ height: "62%", background: PILLAR_COLORS[p].hex.base, opacity: 0.85 }}
+                />
+              </span>
+            );
+          })}
+        </div>
+        <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+          {PILLARS.map((p) => (
+            <span key={p.slug} className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-neutral-500">
+              <span aria-hidden className={`h-[5px] w-[5px] rounded-full ${PILLAR_COLORS[p.slug].dot}`} />
+              {p.short}
+            </span>
+          ))}
+        </div>
       </section>
 
       {/* the sequence — stages with their pillar focus */}
@@ -77,7 +108,7 @@ export default function RoadmapPage() {
                       <Link
                         key={f}
                         href={`/${f}`}
-                        className="rounded-sm bg-accent-900 px-[7px] py-[3px] font-mono text-[10px] uppercase tracking-[0.08em] text-accent-300 no-underline"
+                        className={`rounded-sm px-[7px] py-[3px] font-mono text-[10px] uppercase tracking-[0.08em] no-underline ${PILLAR_COLORS[f].badge}`}
                       >
                         {p.short}
                       </Link>

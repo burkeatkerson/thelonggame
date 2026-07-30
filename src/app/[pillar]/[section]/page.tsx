@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getArticlesForSection } from "@/lib/articles";
 import { PILLARS, pillarBySlug, sectionOf } from "@/lib/pillars";
+import { PILLAR_COLORS } from "@/lib/pillar-colors";
 import { CONTENT_TYPES } from "@/lib/taxonomy";
 
 type Params = { pillar: string; section: string };
@@ -36,11 +37,13 @@ export default async function SectionPage({ params }: { params: Promise<Params> 
 
   return (
     <div className="flex flex-col">
-      <header className="flex flex-col gap-3.5 border-b border-divider px-6 pb-10 pt-14 md:px-10">
+      <header
+        className={`flex flex-col gap-3.5 border-b border-divider px-6 pb-10 pt-14 md:px-10 ${PILLAR_COLORS[pillar.slug].wash}`}
+      >
         <div className="flex items-center gap-2.5">
           <Link
             href={`/${pillar.slug}`}
-            className="font-mono text-[11px] uppercase tracking-[0.1em] text-accent no-underline"
+            className={`font-mono text-[11px] uppercase tracking-[0.1em] no-underline ${PILLAR_COLORS[pillar.slug].text}`}
           >
             ← {pillar.name}
           </Link>
