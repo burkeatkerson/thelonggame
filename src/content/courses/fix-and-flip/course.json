@@ -5,9 +5,9 @@
   "pillar": "capital",
   "draft": false,
   "modules": [
-    { "title": "Foundations — see the game clearly", "from": 1, "to": 3 },
-    { "title": "Find it & fund it", "from": 4, "to": 6 },
-    { "title": "Run the renovation", "from": 7, "to": 9 },
-    { "title": "Exit, keep, scale", "from": 10, "to": 12 }
+    { "title": "Foundations — mindset & the game", "from": 1, "to": 4 },
+    { "title": "Find it & fund it", "from": 5, "to": 7 },
+    { "title": "Run the renovation", "from": 8, "to": 10 },
+    { "title": "Exit, keep, scale", "from": 11, "to": 13 }
   ]
 }

@@ -12,6 +12,16 @@ draft: false
 A **waterfall** is the order money leaves a deal. Everything else in a
 syndication document is commentary on this one clause.
 
+<KeyTakeaways
+  items={[
+    "The waterfall is the order money exits: pref first, catch-up second, split third — and 'preferred' means FIRST, not guaranteed.",
+    "Three drafting details move real money: cumulative vs. non-cumulative pref, pref on capital vs. capital-plus-accrued, deal-by-deal vs. whole-fund promote.",
+    "A pref is not a coupon: in a bad year there may be nothing to distribute, and an unpaid non-cumulative pref is simply gone.",
+    "The waterfall also encodes the alignment: sponsors paid mostly above the pref have reasons to perform; sponsors paid mostly in fees get paid either way.",
+    "Read it before you sign your first LP check — from either side of the table.",
+  ]}
+/>
+
 ## The tiers, with real dollars
 
 Say a deal distributes $100k this quarter, LPs put in $1M, and the structure is
@@ -23,6 +33,18 @@ an 8% pref with a 70/30 split above it.
    they hold their promised share of profits so far.
 3. **The split** — whatever remains divides 70/30.
 
+<MoneyFlow
+  title="The $100k quarter, through the tiers"
+  total={100000}
+  totalLabel="Distributable cash this quarter"
+  segments={[
+    { label: "Tier 1 — LP preferred return (8% on $1M)", value: 80000 },
+    { label: "Tier 2 — sponsor catch-up (per the docs)", value: 6000 },
+  ]}
+  remainderLabel="Tier 3 — split 70/30: $9.8k LP / $4.2k sponsor"
+  note="The same $100k under a non-cumulative pref after a skipped year, or a whole-fund promote after one bad asset, lands very differently — the tiers are simple; the drafting is where the money moves. Now run the bad quarter: $40k distributable means LPs receive $40k of an $80k pref and the sponsor receives zero — IF the pref accrues. If it doesn't, the shortfall never existed."
+/>
+
 ## What to actually check
 
 - Is the pref **cumulative**? If a bad year skips it, does it accrue?
@@ -33,8 +55,11 @@ Each of those words moves real money from one pocket to the other. That is why
 this entry sits at Year 12 — read it before you sign your first LP check, from
 either side of the table.
 
-## Move the money yourself
-
-Change the pref, the split and the profit - and watch every tier of the waterfall reprice.
-
-<WaterfallVisualizer />
+One more honesty for the LP side, because glossaries shouldn't launder risk:
+the waterfall orders distributions — **it does not create them.** In a deal
+that underperforms, there may be nothing to order: syndications fail, capital
+calls happen, and "8% pref" on offering documents has never once guaranteed 8%
+in a bank account. The waterfall's real diligence value is what it reveals
+about alignment — a sponsor paid mostly *above* the pref is betting alongside
+you; one paid mostly in [fees regardless of outcome](/articles/real-estate-syndication-explained)
+has already been paid. Read the clause, then read the person.
