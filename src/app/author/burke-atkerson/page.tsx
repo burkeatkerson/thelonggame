@@ -60,10 +60,12 @@ export default function AuthorPage() {
       <div className="prose prose-invert prose-longgame max-w-[680px] text-[17px] leading-[1.62]">
         <p>
           Burke Atkerson is a real estate investor and the author of{" "}
-          <em>
-            The Long Game: the 20-year roadmap to building wealth through scalable
-            real estate investing strategies
-          </em>
+          <Link href="/book">
+            <em>
+              The Long Game: the 20-year roadmap to building tax-free wealth
+              through scalable real estate strategies
+            </em>
+          </Link>
           . The book&rsquo;s argument — and this site&rsquo;s — is that real estate
           strategies aren&rsquo;t competing, they&rsquo;re <strong>sequential</strong>:
           four pillars, in the order they fund each other, laid over a twenty-year

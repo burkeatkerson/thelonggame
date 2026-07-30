@@ -37,7 +37,7 @@ export default function AboutPage() {
           harder, and call the fatigue progress.
         </p>
         <p>
-          The book — <em>The Long Game: the 20-year roadmap to building wealth
+          <Link href="/book">The book</Link> — <em>The Long Game: the 20-year roadmap to building wealth
           through scalable real estate investing strategies</em> — walks the
           sequence in order. The site is the same roadmap in pieces: every article,
           course and calculator filed by pillar and by the year of the plan it
