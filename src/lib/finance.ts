@@ -166,6 +166,102 @@ export function exchangeTax(x: ExchangeTaxInputs): ExchangeTaxResult {
   };
 }
 
+/** Present value of a level monthly payment stream at an annual discount rate. */
+export function presentValueOfPayments(
+  monthlyAmount: number,
+  annualRatePct: number,
+  months: number,
+): number {
+  const r = annualRatePct / 100 / 12;
+  if (r <= 0) return monthlyAmount * months;
+  return (monthlyAmount * (1 - Math.pow(1 + r, -months))) / r;
+}
+
+export type NotePricingInputs = {
+  /** unpaid principal balance */
+  upb: number;
+  /** note's face interest rate */
+  noteRatePct: number;
+  /** remaining amortization months */
+  remainingMonths: number;
+  /** months until balloon (0 = fully amortizing, no balloon) */
+  balloonMonths: number;
+};
+
+/** Price a note (payments + balloon) at a target annual yield. */
+export function notePriceAtYield(n: NotePricingInputs, yieldPct: number): number {
+  const pmt = monthlyPayment(n.upb, n.noteRatePct, n.remainingMonths / 12);
+  const horizon = n.balloonMonths > 0 ? Math.min(n.balloonMonths, n.remainingMonths) : n.remainingMonths;
+  const balloon =
+    n.balloonMonths > 0 && n.balloonMonths < n.remainingMonths
+      ? remainingBalance(n.upb, n.noteRatePct, n.balloonMonths, n.remainingMonths / 12)
+      : 0;
+  const r = yieldPct / 100 / 12;
+  const pvBalloon = r > 0 ? balloon / Math.pow(1 + r, horizon) : balloon;
+  return presentValueOfPayments(pmt, yieldPct, horizon) + pvBalloon;
+}
+
+/** Solve the annual yield implied by paying `price` for a note. Bisection. */
+export function noteYieldAtPrice(n: NotePricingInputs, price: number): number {
+  let lo = 0.01, hi = 60;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (notePriceAtYield(n, mid) > price) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+export type CostSegInputs = {
+  purchasePrice: number;
+  landPct: number;
+  /** share of the improvement basis reclassified into 5/7/15-year property */
+  reclassPct: number;
+  /** bonus depreciation rate in the placed-in-service year */
+  bonusPct: number;
+  /** 27.5 residential or 39 commercial */
+  recoveryYears: number;
+  marginalRatePct: number;
+};
+
+export type CostSegResult = {
+  improvementBasis: number;
+  reclassified: number;
+  bonusDeduction: number;
+  straightLineYear1: number;
+  totalYear1: number;
+  baselineYear1: number;
+  extraDeduction: number;
+  taxShield: number;
+  futureRecaptureAt25: number;
+};
+
+/** First-year depreciation with a cost-seg study + bonus vs. straight-line only. */
+export function costSegYearOne(c: CostSegInputs): CostSegResult {
+  const improvementBasis = c.purchasePrice * (1 - c.landPct / 100);
+  const reclassified = improvementBasis * (c.reclassPct / 100);
+  const bonusDeduction = reclassified * (c.bonusPct / 100);
+  // Remaining short-life basis depreciates fast anyway; approximate the
+  // non-bonused reclass at 20% (5-yr DDB first year) and the long-life
+  // remainder straight-line with the half-month-ish first-year haircut ignored.
+  const shortLifeFirstYear = (reclassified - bonusDeduction) * 0.2;
+  const straightLineYear1 = (improvementBasis - reclassified) / c.recoveryYears;
+  const totalYear1 = bonusDeduction + shortLifeFirstYear + straightLineYear1;
+  const baselineYear1 = improvementBasis / c.recoveryYears;
+  const extraDeduction = Math.max(0, totalYear1 - baselineYear1);
+  return {
+    improvementBasis,
+    reclassified,
+    bonusDeduction,
+    straightLineYear1,
+    totalYear1,
+    baselineYear1,
+    extraDeduction,
+    taxShield: totalYear1 * (c.marginalRatePct / 100),
+    futureRecaptureAt25: totalYear1 * 0.25,
+  };
+}
+
 /** Grow a value by rate for `years`, returning the year-by-year series. */
 export function growthSeries(start: number, annualRatePct: number, years: number): number[] {
   const out = [start];

@@ -44,6 +44,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     WaterfallVisualizer: TOOL_COMPONENTS["waterfall-visualizer"],
     ExchangeCalculator: TOOL_COMPONENTS["1031-exchange-calculator"],
     LongGameCalculator: TOOL_COMPONENTS["long-game-calculator"],
+    AssumptionArbitrage: TOOL_COMPONENTS["assumption-arbitrage"],
+    CostSegPlanner: TOOL_COMPONENTS["cost-seg-planner"],
+    NoteYieldCalculator: TOOL_COMPONENTS["note-yield-calculator"],
+    ExitStrategyComparator: TOOL_COMPONENTS["exit-strategy-comparator"],
+    VelocitySimulator: TOOL_COMPONENTS["velocity-simulator"],
     a: ({ href = "", children, ...props }) => {
       const isInternal = href.startsWith("/") || href.startsWith("#");
       if (isInternal) {

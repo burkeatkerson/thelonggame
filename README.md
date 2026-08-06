@@ -87,7 +87,9 @@ src/content/courses/first-raise/
 
 Live calculators: Long Game (RE vs stocks), deal analyzer, flip/70% rule,
 BRRRR, house hack (incl. FHA self-sufficiency), refinance timer, waterfall
-visualizer, 1031 exchange. Each is embedded inside its matching articles.
+visualizer, 1031 exchange, assumption arbitrage, portfolio velocity
+simulator, note yield, cost segregation planner, exit strategy comparator.
+Each is embedded inside its matching articles.
 
 ## Routes
 
